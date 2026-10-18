@@ -1,0 +1,7 @@
+{
+  "name": "bio-brain-v2",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node verify/all.mjs" }
+}
