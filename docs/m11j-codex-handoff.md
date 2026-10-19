@@ -1,12 +1,12 @@
-# Bio-brain-v2: local Codex review and cloud-only test continuation
+# Bio-brain-v2: local Codex execution, training and test continuation
 
 ## Status and boundary
 
 The user requested transfer to Codex during T1. The native gpt-6-astra worker finished and persisted T1, then stopped before T2. T2 and every later neural stage are NOT RUN at handoff. Do not duplicate T1 or the completed teachers.
 
-Latest user instruction: update the full project to GitHub first. Then use local Codex for project work and review, without raising a foreground window on the user computer. Training and tests remain on the assistant cloud host, with the visible training/test window there. Local Codex must not run T2 or other neural experiments locally. It can inspect code/results and propose exact cloud commands; the supervising cloud worker executes them after the parent resumes.
+Latest user instruction supersedes the earlier cloud-only split: run project work, training and testing in local Codex using the user's CPU. The assistant coordinates Codex, reviews its work, and discusses results with the user. Do not raise a foreground terminal or other window on the user computer. Cloud T2 remains paused; there must be only one resumed test sequence, on the user computer.
 
-Use gpt-6-astra with xhigh reasoning if supported. Verify the actual selected model. Do not substitute a different model silently. Local Codex review is now authorized. Neural execution is CLOUD ONLY. The user has authorized committing and pushing the full current project to the existing work branch, with no force push or main merge. Further publication must stay within that scope. Do not use unsafe/bypass permissions, copy credentials, or access denied Codex session paths.
+Use gpt-6-astra with xhigh reasoning if supported. Verify the actual selected model. Do not substitute a different model silently. The user authorized committing and publishing the full current project to the existing work branch, with no force push or main merge. Do not use unsafe/bypass permissions, copy credentials, or access denied Codex session paths.
 
 ## Code and source of truth
 
@@ -52,18 +52,18 @@ Fixed criteria include light/bell causal success and first-press >=90%; with 6 e
 
 The observer records exact action/physical-event cause IDs, positive drive contributions, all eligible path generations, onsets, prediction instances, per-generation changes and exact miss formula checks. Waiting checks are observation only. There is no added control lock.
 
-## Verify before resume
+## Verify and materialize before local resume
 
-1. Confirm no neural process from this test is still running. On the original cloud, the T1 process should already be finished. Do not assume a disconnected terminal means it stopped.
+1. Use the current Library transfer workflow in the consuming local executor. Materialize the confirmed handoff archive to a local path, verify its SHA256 and internal manifest, then restore prepare/teachers/T1 under the local repo out/m11j-actions-online/. A cloud absolute path is not a local file. Confirm no neural process from this test is still running. On the original cloud, the T1 process should already be finished. Do not assume a disconnected terminal means it stopped.
 2. Verify all archive manifest hashes and the prepare/teachers/T1 artifact manifests.
 3. Verify T1 complete.json valid=true and state.json schema m11j-action-state-v1.
 4. Check T1 result preparationChecks, including exact90 commands/executions and copies, no physical bell. A preparation failure is a real failure, not permission for more teaching.
-5. Current shared-cloud T2 directory may contain ONLY PAUSED-NOT-RUN.txt. That is an intentional overwrite guard, not experiment output. Preserve a copy of that marker in the handoff evidence, then remove that one file and rmdir the empty T2 directory only when the parent authorizes CLOUD continuation after GitHub sync and local Codex handoff. Never remove a populated/result-bearing phase directory.
+5. Current shared-cloud T2 directory may contain ONLY PAUSED-NOT-RUN.txt. That is an intentional overwrite guard, not experiment output. Preserve a copy of that marker in the handoff evidence, then remove that one file and rmdir the empty T2 directory only in the selected local checkout when the parent authorizes local continuation after GitHub sync and handoff. The original cloud guard remains in place. Never remove a populated/result-bearing phase directory.
 6. Prefer fetching/checking out the published work branch and verifying its full commit hash. Do NOT apply the cumulative patch again on that updated branch. Only when reconstructing from the pinned base, apply the cumulative patch or restore the supplied current repository tree. Restore out/m11j-actions-online/prepare, teachers, and T1 at their original relative paths. The absolute repo root may differ; sealed paths are relative.
 
-## Exact remaining CLOUD commands, not for local execution
+## Exact remaining local Codex commands
 
-The supervising cloud worker runs these from the cloud repo root, sequentially, only after the parent resumes the paused tests. Local Codex reviews and supervises; it must not execute these on the user computer. After EACH successful process exit, inspect complete.json and result.json, save source/state/results and the phase manifest durably to Library BEFORE the next phase. A behavioral FAIL does not authorize changes or extending counts; continue the remaining predeclared sequence and preserve that failure.
+After the supervising parent confirms the handoff, local Codex runs these from the verified local repo root, sequentially, using the user CPU in the background. Do not launch a foreground window. Do not also resume them on the cloud. After EACH successful process exit, inspect complete.json and result.json, save source/state/results and the phase manifest durably to Library BEFORE the next phase. A behavioral FAIL does not authorize changes or extending counts; continue the remaining predeclared sequence and preserve that failure.
 
 node experiments/m11j-actions-online.mjs T2
 node experiments/m11j-actions-online.mjs calibrate
@@ -80,10 +80,10 @@ node experiments/m11j-actions-online.mjs report
 
 The runner refuses to overwrite any existing phase directory. Do not bypass this. Inspect uncertain/partial outcomes before retrying. The report aggregate includes preparation checks; do not report success just because a process exits0.
 
-Expected remaining compute: about 25-35 minutes after T1 on the original cloud, plus review/persistence. Re-estimate from actual speed in a different environment. Do not launch an extra full suite or performance benchmark; the previous M2 53.72ms >50ms failure remains historical and unchanged.
+The original cloud estimate was about 25-35 minutes after T1, plus review/persistence. Local CPU speed is not yet measured. Re-estimate from the actual local T2 rate; do not promise the cloud timing on different hardware. Do not launch an extra full suite or performance benchmark; the previous M2 53.72ms >50ms failure remains historical and unchanged.
 
 ## Delivery
 
-Keep the user informed through the parent. In the original cloud, /workspace/shared/bio-brain-progress.log feeds the visible foreground viewer. Use short human-facing phase/results, not prompts or internal reasoning. Do not raise a foreground terminal or other window on the user computer. The parent provides the verified local Codex task link and supervises cloud execution.
+Keep the user informed through the parent. In the original cloud, /workspace/shared/bio-brain-progress.log feeds the visible foreground viewer. Use short human-facing phase/results, not prompts or internal reasoning. Do not raise a foreground terminal or other window on the user computer. The parent provides the verified local Codex task link, reviews results, and coordinates the local background execution.
 
 Request independent read-only review of each completed phase and final report. Final result must distinguish prepared-path validity, autonomous normal/fault/recovery results, transient wrong/repeated actions, caller cancellations, and missing exploration. Return a full code patch and evidence archive, exact source/state hashes and confirmed Library IDs. Do not erase old failures or claim indefinite/general acceptance.

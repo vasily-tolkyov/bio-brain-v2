@@ -671,5 +671,5 @@ change summary are in the calibration notes above.
 - [M11h event-level learner](docs/m11h-event-learning.md): learning N retained, learning M removed, zero-only deletion; goal/action M retained.
 - [M11i continuous online protocol](docs/m11i-online.md): bounded passive online acceptance completed.
 - [M11j action closed-loop protocol](docs/m11j-actions-online.md): fresh teachers and T1 complete; T2 and autonomous stages paused, not accepted yet.
-- [Cloud-only test continuation and local Codex handoff](docs/m11j-codex-handoff.md).
+- [Local Codex background training/test handoff](docs/m11j-codex-handoff.md).
 - [Raw evidence archive index](docs/artifact-index.json) and [small sealed metadata](evidence/m11j-checkpoint/README.md). Raw states/results remain in Library and are not silently substituted by summaries.
