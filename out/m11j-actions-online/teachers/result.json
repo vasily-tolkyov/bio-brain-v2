@@ -1,0 +1,79 @@
+{
+  "teacher": [
+    {
+      "feature": "light",
+      "id": 0,
+      "members": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "feature": "bell",
+      "id": 6,
+      "members": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "feature": "bird",
+      "id": 12,
+      "members": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    }
+  ],
+  "motor": [
+    {
+      "feature": "press",
+      "id": 0,
+      "members": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "feature": "wave",
+      "id": 6,
+      "members": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "feature": "idle",
+      "id": 12,
+      "members": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    }
+  ],
+  "t": 0
+}

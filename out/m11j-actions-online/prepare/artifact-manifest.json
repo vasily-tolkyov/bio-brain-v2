@@ -1,0 +1,190 @@
+{
+  "schema": "m11j-artifacts-v1",
+  "files": [
+    {
+      "path": "complete.json",
+      "bytes": 149,
+      "sha256": "99e233b02438059c64064b64a4bf137e1a31251e9d8bd4226f9afed03ced2431"
+    },
+    {
+      "path": "plan.json",
+      "bytes": 5400,
+      "sha256": "71f48da4251008b40accb6bc1c5b13a0718fcf7047c911e832c8704994b76f98"
+    },
+    {
+      "path": "provenance-start.json",
+      "bytes": 8422,
+      "sha256": "12e391f6cdacf3733da64279d4219c3ab859eec278e928357f2c5e937e73210b"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 8422,
+      "sha256": "12e391f6cdacf3733da64279d4219c3ab859eec278e928357f2c5e937e73210b"
+    },
+    {
+      "path": "schedule-19.json",
+      "bytes": 31032,
+      "sha256": "3090be3b8f42ff94f741a2612e2ceef0da40d52063ae95886d75286be1d01c68"
+    },
+    {
+      "path": "schedule-31.json",
+      "bytes": 31004,
+      "sha256": "3573c8eecac75f43d5541cab6a0cb883fc106144598961349a744a08b13121a6"
+    },
+    {
+      "path": "schedule-7.json",
+      "bytes": 31015,
+      "sha256": "28b5ad674e22643e4e4b45d9bbbe2077679943539ab757376af4894c17f29459"
+    },
+    {
+      "path": "source-snapshot/experiments/m11a-runtime.mjs",
+      "bytes": 1224,
+      "sha256": "beb7265f33f95843f3a05c7244fb63e0ae3824ec2f2ceb0e5065b630a2bd6b83"
+    },
+    {
+      "path": "source-snapshot/experiments/m11j-actions-online.mjs",
+      "bytes": 26548,
+      "sha256": "14b79254815d2f081b4a3532dfbfe80bccb5dd3a2a3059a00f6dcc869552ea72"
+    },
+    {
+      "path": "source-snapshot/experiments/m11j-audit.mjs",
+      "bytes": 6092,
+      "sha256": "62dc7d5bdf6470551668c705ff424c441c5e0b50ebc383ad341a42553929f664"
+    },
+    {
+      "path": "source-snapshot/experiments/m11j-world.mjs",
+      "bytes": 7679,
+      "sha256": "bd0b488df62b957aef8bff44b1b729e52c94e9ddf127cfda0ebd959d6f640df5"
+    },
+    {
+      "path": "source-snapshot/experiments/m8-pipeline.mjs",
+      "bytes": 1485,
+      "sha256": "15ce9ac53e3246894f955570f313caf7f171a6a84d646b20f8c3da11dee74165"
+    },
+    {
+      "path": "source-snapshot/experiments/m9-pipeline.mjs",
+      "bytes": 3086,
+      "sha256": "ff384818c63d931a70ec0eda151772020713b58aa3d44433287b1d212bb57c8d"
+    },
+    {
+      "path": "source-snapshot/package.json",
+      "bytes": 149,
+      "sha256": "cbe94a548bb1035c452531e68a43b697f7f46b2fe747542d757cbd8974388831"
+    },
+    {
+      "path": "source-snapshot/src/checkpoint.mjs",
+      "bytes": 735,
+      "sha256": "12fae1a9e91eac1b31c8837ca6789a9d5be73e9b0314a1f884f0327c8a867a3a"
+    },
+    {
+      "path": "source-snapshot/src/core/check.mjs",
+      "bytes": 461,
+      "sha256": "19add3ca46d7277bc95bbbc91172ca72a47bdbe5b74401658b64d0aaca5f2b5d"
+    },
+    {
+      "path": "source-snapshot/src/core/rng.mjs",
+      "bytes": 1389,
+      "sha256": "906c8ec32c572f0c9c30fc43242f0e3be99a1f160fa7884b5e016864cecc7416"
+    },
+    {
+      "path": "source-snapshot/src/core/state.mjs",
+      "bytes": 5409,
+      "sha256": "b302cccbf248120984522e92fe54337b358b7a779281d66c42360d39f0ce4022"
+    },
+    {
+      "path": "source-snapshot/src/downward.mjs",
+      "bytes": 3047,
+      "sha256": "15595376307eb8cfa07bf83537210c71f23ceb2fe844b69ecd813d11d285798f"
+    },
+    {
+      "path": "source-snapshot/src/envs/actions.mjs",
+      "bytes": 3965,
+      "sha256": "fed461b2b98c0617f50d15b8cdf475e6bf030914fd1ad189e44991c3595f9312"
+    },
+    {
+      "path": "source-snapshot/src/errors.mjs",
+      "bytes": 5000,
+      "sha256": "ae1b55a4320f049bf8177458beb07d225b215b192714b5e8316fb8d68fd8e26f"
+    },
+    {
+      "path": "source-snapshot/src/goals.mjs",
+      "bytes": 5896,
+      "sha256": "6f82f32d5c9b94a71faa84e612efe6b9b49233c31ba1ab4f16a2f9637882a4ba"
+    },
+    {
+      "path": "source-snapshot/src/io.mjs",
+      "bytes": 3860,
+      "sha256": "a3fe8d4c41b609940008cf57ccc2a278b2501008a3c4ae48c75c7d9d7cd00914"
+    },
+    {
+      "path": "source-snapshot/src/layer.mjs",
+      "bytes": 4568,
+      "sha256": "a521ca2424a19f630dfae3f72107d06793113abeff9215555d457e6ff2602b22"
+    },
+    {
+      "path": "source-snapshot/src/learning.mjs",
+      "bytes": 2141,
+      "sha256": "917d1613531d5285c4286963436b9d331703069d5f4e7effe3647e4433c32b5d"
+    },
+    {
+      "path": "source-snapshot/src/network.mjs",
+      "bytes": 10707,
+      "sha256": "6ceff87b308b04b0cbdcd9dc566e606d103f76e16c5b1725b79d0812f9649f48"
+    },
+    {
+      "path": "source-snapshot/src/neuron/lif.mjs",
+      "bytes": 855,
+      "sha256": "b2f31a4edf5a2b0164c554de44b53275eeb44bfccd32e083bcb9b68b76892138"
+    },
+    {
+      "path": "source-snapshot/src/novelty.mjs",
+      "bytes": 4654,
+      "sha256": "e5740c5e7dd13e91ea2fcb87db13bb94f65e1d00b710f10f07ae8a99b578b548"
+    },
+    {
+      "path": "source-snapshot/src/output.mjs",
+      "bytes": 1913,
+      "sha256": "2ab8c628b342ac305e191f58e7c58ef34877d1c83a0a4ff09e2944f5f726bfe2"
+    },
+    {
+      "path": "source-snapshot/src/predict.mjs",
+      "bytes": 8309,
+      "sha256": "e9309f93d70b4eb8fbcdf40b37e0c1f197a9860004e28695c9f0d4796cbfa1a8"
+    },
+    {
+      "path": "source-snapshot/src/readout.mjs",
+      "bytes": 2225,
+      "sha256": "0156a3aa043f0047f7749ef2a3b8667230d486e36445cdff7fcf4b4318f87fb5"
+    },
+    {
+      "path": "source-snapshot/src/stdp.mjs",
+      "bytes": 2800,
+      "sha256": "4523193d69a5df86600f944587709c09d9708a14ddb37a7dc8edd530a8ca3603"
+    },
+    {
+      "path": "source-snapshot/src/synapse.mjs",
+      "bytes": 1948,
+      "sha256": "9cb89da4a9db3902d4fd8a1e9307540fa1a741fde55ac4c8a49cf94dd48bb35f"
+    },
+    {
+      "path": "source-snapshot/src/three-factor.mjs",
+      "bytes": 7660,
+      "sha256": "969a1248848fbbb2e9346512f807e9c0fadf7acbdecae0115c0e53b4e3ec1b1a"
+    },
+    {
+      "path": "source-snapshot/src/unroll.mjs",
+      "bytes": 3282,
+      "sha256": "488f5c2f01564e283781bd0ea384fa69a1253263970882207dd5e96238d5a71f"
+    },
+    {
+      "path": "source-snapshot/src/world.mjs",
+      "bytes": 3622,
+      "sha256": "0c48c1c9895e08dfc60ad8f788f94675e360d81a8488f106600ab00ea04056ab"
+    },
+    {
+      "path": "teacher-schedule.json",
+      "bytes": 2899,
+      "sha256": "b50decad775682fd9f921b8647c9a8cf6e0d139e4d75d2c0b1c0a9c832b0310d"
+    }
+  ]
+}
