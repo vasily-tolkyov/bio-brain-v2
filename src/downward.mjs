@@ -9,12 +9,24 @@ const key = (A, k, B) => JSON.stringify([A, k, B]);
 
 export function createDownward(ids) {
   new TimeUnroll(ids);
-  return { weights: [] };
+  return { weights: [], nextGeneration: 1 };
 }
 
 export function newConnection(A, k, B, t) {
   return { A, B, k, ruleKey: key(A, k, B), W: DOWNWARD.wInit, createdAt: t,
-    deltas: { STDP: 0, N: DOWNWARD.wInit, M: 0, clamp: 0 } };
+    deltas: { STDP: 0, N: DOWNWARD.wInit, miss: 0, clamp: 0 } };
+}
+
+/** Store-local identity survives snapshots and distinguishes same-time rebirths. */
+export function registerConnection(downward, w) {
+  downward.nextGeneration ??= 1;
+  if (!Number.isSafeInteger(downward.nextGeneration) || downward.nextGeneration < 1) {
+    throw new Error('Invalid connection generation counter');
+  }
+  if (w.generation === undefined) w.generation = downward.nextGeneration++;
+  if (!Number.isSafeInteger(w.generation) || w.generation < 1) throw new Error('Invalid connection generation');
+  downward.nextGeneration = Math.max(downward.nextGeneration, w.generation + 1);
+  return w;
 }
 
 /** One pre-gated pairing at this synapse, never the pairing that created it. */

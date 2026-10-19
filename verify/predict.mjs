@@ -9,7 +9,7 @@ const ids = ['a', 'b', 'c'];
 const rule = (A, k, B, W) => ({ A, k, B, W: W * DOWNWARD.wMax, ruleKey: JSON.stringify([A, k, B]) });
 const downward = weights => ({ weights });
 const prediction = (k = 8) => ({ A: 'a', B: 'b', k, strength: 0.8, activation: 1, tOnset: 0,
-  tArrive: 100 * 2 ** (k - 1), createdAt: 0, ruleKey: JSON.stringify(['a', k, 'b']) });
+  tArrive: 100 * 2 ** (k - 1), createdAt: 0, generation: 1, ruleKey: JSON.stringify(['a', k, 'b']) });
 const lit = (id, strength = 1) => ({ id, strength });
 
 export function verifyPredict() {

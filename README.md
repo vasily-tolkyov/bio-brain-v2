@@ -1,3 +1,5 @@
+> **Current mechanism, 2026-10-19:** prediction learning now retains neural N but removes neural M. Each prediction is matched within its own arrival-centred window. A real hit strengthens once. An unmatched prediction weakens once at the completed window. Only exact-zero connections are deleted. Goal/action M is retained separately. See [M11h implementation and evidence](docs/m11h-event-learning.md). Earlier milestone reports and M-specific commands below describe historical mechanisms; use their sealed source snapshots, not this runtime, to reproduce them. Current verification: `npm test`; current fresh scenes: `node experiments/m11h-scenes.mjs --plan`.
+
 # bio-brain-v2
 
 Plain Node.js >=20 ESM, with no dependencies or build step. Run `npm test`.
@@ -663,3 +665,11 @@ hit-only gain/loss ratios 0.004628/0.004874/0.004178. The
 [cross-report audit](out/m10c/audit.json) verifies fresh cache provenance,
 retention, copies and acceptance flags. Detailed per-seed tables and the file
 change summary are in the calibration notes above.
+
+### Current supervised checkpoints (2026-10-19)
+
+- [M11h event-level learner](docs/m11h-event-learning.md): learning N retained, learning M removed, zero-only deletion; goal/action M retained.
+- [M11i continuous online protocol](docs/m11i-online.md): bounded passive online acceptance completed.
+- [M11j action closed-loop protocol](docs/m11j-actions-online.md): fresh teachers and T1 complete; T2 and autonomous stages paused, not accepted yet.
+- [Cloud-only test continuation and local Codex handoff](docs/m11j-codex-handoff.md).
+- [Raw evidence archive index](docs/artifact-index.json) and [small sealed metadata](evidence/m11j-checkpoint/README.md). Raw states/results remain in Library and are not silently substituted by summaries.

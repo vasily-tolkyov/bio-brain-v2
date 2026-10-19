@@ -46,12 +46,12 @@ export function verifyM11a() {
       { id: 'action:press', feature: 'action:press' }], downward: { weights: [] } };
     const m = measurements(p), w = newConnection(1, 1, 0, 0);
     p.downward.weights.push(w); m.observe(1, 0); p.t = 100; m.sample();
-    w.W = 0; w.deltas.M = -0.02; w.deltas.clamp = 0.01; p.downward.weights.splice(0);
+    w.W = 0; w.deltas.miss = -0.02; w.deltas.clamp = 0.01; p.downward.weights.splice(0);
     m.observe(2, 100); p.t = 200; m.sample();
     p.downward.weights.push(newConnection(1, 1, 0, 200)); m.observe(3, 200); p.t = 300; m.sample();
     const row = m.finish().rows.find(r => r.ruleKey === w.ruleKey);
     assert.deepEqual(row.trajectory, [0, 0.01, 0, 0.01]);
-    assert.deepEqual(row.continuationDeltas, { STDP: 0, N: 0.02, M: -0.02, clamp: 0.01 });
+    assert.deepEqual(row.continuationDeltas, { STDP: 0, N: 0.02, miss: -0.02, clamp: 0.01 });
     c.check('Existing M11a metrics preserve slots and cumulative deltas through deletion and recreation', true);
   } catch (e) { c.check('Sparse M11a measurement', false, e.stack); }
   return c.done();

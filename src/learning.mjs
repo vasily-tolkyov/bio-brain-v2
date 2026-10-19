@@ -2,7 +2,7 @@
 import { FutureSlices } from './predict.mjs';
 import { createDownward } from './downward.mjs';
 import { ThreeFactor, SurpriseGate } from './three-factor.mjs';
-import { SpikingErrors } from './errors.mjs';
+import { SpikingNovelty } from './novelty.mjs';
 import { WINDOW_MS } from './readout.mjs';
 
 export function attachLearning(p, seed) {
@@ -12,7 +12,7 @@ export function attachLearning(p, seed) {
   p.future = new FutureSlices(ids, p.downward);
   p.unroll = p.future.past;
   p.factor = new ThreeFactor(p.future);
-  p.errors = new SpikingErrors(ids, seed);
+  p.errors = new SpikingNovelty(ids, seed);
   p.gate = new SurpriseGate();
   p.learningWindows = 0; p.totalN = 0;
   return p;
@@ -33,10 +33,11 @@ export function learnWindow(p, lit, p7 = lit) {
 }
 
 export function saveLearning(p) {
-  return { future: p.future.saveState(), factor: p.factor.saveState(), errors: p.errors.saveState(),
+  return { schema: 'event-learning-v1', future: p.future.saveState(), factor: p.factor.saveState(), errors: p.errors.saveState(),
     surprise: p.gate.value, learningWindows: p.learningWindows, totalN: p.totalN };
 }
 export function loadLearning(p, state) {
+  if (state?.schema !== 'event-learning-v1') throw new Error('Unsupported learning snapshot: legacy M states require explicit migration');
   p.future.loadState(state.future); p.downward = p.future.downward; p.unroll = p.future.past;
   p.factor = new ThreeFactor(p.future).loadState(state.factor);
   p.errors.loadState(state.errors); p.gate.value = state.surprise;

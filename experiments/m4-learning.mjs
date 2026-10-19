@@ -12,7 +12,7 @@ export const SEEDS = [7, 19, 31], TRAIN_TRIALS = 30;
 const sources = ['src/downward.mjs', 'src/predict.mjs', 'src/learning.mjs', 'experiments/m4-learning.mjs', 'experiments/m3-pipeline.mjs',
   'src/layer.mjs', 'src/io.mjs', 'src/world.mjs', 'src/unroll.mjs', 'src/readout.mjs',
   'src/network.mjs', 'src/synapse.mjs', 'src/stdp.mjs', 'src/neuron/lif.mjs',
-  'src/core/rng.mjs', 'src/core/state.mjs', 'src/errors.mjs', 'src/three-factor.mjs'];
+  'src/core/rng.mjs', 'src/core/state.mjs', 'src/novelty.mjs', 'src/three-factor.mjs'];
 export const signature = createHash('sha256').update(sources.map(path =>
   readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')).join('\n')).digest('hex');
 const saveLayer = layer => ({ ticks: layer.ticks, attractors: structuredClone(layer.attractors),

@@ -1,0 +1,55 @@
+{
+  "schema": "bio-brain-artifact-index-v1",
+  "updatedAt": "2026-10-19T10:52:00Z",
+  "access": "Library artifacts require access through the owner account. These identifiers are not public download URLs. Raw evidence is intentionally excluded from Git.",
+  "status": {
+    "M11g": "Historical reconstruction; overall NOT ACCEPTED.",
+    "M11h": "Current event learner; final full suite118/119, sole unchanged M2 speed failure53.72ms>50ms; representative bird ratio failed.",
+    "M11i": "Predeclared bounded passive online protocol passed; three environmental schedules share one training seed.",
+    "M11j": "Only prepare, teachers and T1 completed; T2 onward NOT RUN, paused for GitHub/local Codex handoff."
+  },
+  "artifacts": [
+    {
+      "filename": "bio-brain-rebuild-final.tar.gz",
+      "libraryFileId": "libfile_55fb1e0095ac8191aa658d66560f93e0",
+      "version": 0,
+      "bytes": 12290448,
+      "sha256": "04273498c2ac1b225aa529539601f31abd7f9b50b7a643b8ee314517b0909716"
+    },
+    {
+      "filename": "bio-brain-event-final.tar.gz",
+      "libraryFileId": "libfile_0459a4d012dc819180b424f30899a1e9",
+      "version": 0,
+      "bytes": 2796866,
+      "sha256": "8d1756751b4684712c64879bfb38299d1b396bc8516287b311a2fb719c8fb0a9"
+    },
+    {
+      "filename": "bio-brain-online-final.tar.gz",
+      "libraryFileId": "libfile_6be1c656dd48819187b7d9e4ee387ea7",
+      "version": 0,
+      "bytes": 3036020,
+      "sha256": "2a8cca4c3bec508be6d7d2735aaa39c7817a2d74aa9839a6841d56cd5a843ee1"
+    },
+    {
+      "filename": "bio-brain-actions-protocol.tar.gz",
+      "libraryFileId": "libfile_e15fe67000ac8191ad36573ad4b624ec",
+      "version": 0,
+      "bytes": 555628,
+      "sha256": "04f4a996aad23f66f12b99bceed552f99cce6cdd2856b0822ec2386d974f020b"
+    },
+    {
+      "filename": "bio-brain-actions-teachers.tar.gz",
+      "libraryFileId": "libfile_5a7df4691268819190c928bd2d39bca9",
+      "version": 0,
+      "bytes": 673852,
+      "sha256": "def87ef60a005717b85665ed23e71fae84021ffa5f81d12f0f9fc8fb054e12e2"
+    },
+    {
+      "filename": "bio-brain-actions-T1.tar.gz",
+      "libraryFileId": "libfile_2123f530b48881918ce01e248326a1e1",
+      "version": 0,
+      "bytes": 1081102,
+      "sha256": "55818bb6b0e1aaeae0b2b644f21a68a32204d4d72f7f1671feaae73669ce2ed2"
+    }
+  ]
+}

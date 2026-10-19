@@ -1,4 +1,6 @@
-/** Per-feature spiking errors. Scheduling/rate conversion runs only between windows. */
+/** Goal-only neural error. Prediction learning uses novelty.mjs, not this circuit.
+ * Retain the previous goal topology/RNG and amplitude; its unused N cells are not
+ * a learning source. Removing them is a separate action-path change. */
 import { SpikingNetwork } from './network.mjs';
 import { TimeUnroll } from './unroll.mjs';
 import { WINDOW_MS } from './readout.mjs';
@@ -7,74 +9,42 @@ import { WINDOW_MS } from './readout.mjs';
 // 10 contacts, release=0.3, recovery=100 ms. 10.3 Hz/afferent gives ~1.5 Hz/cell
 // at rest. This one tonic setting applies to every N/M cell, feature and seed.
 const toleranceMs = 500;
-export const ERRORS = Object.freeze({ cells: 10, fibers: 8, dt: 0.5, rateHz: 120,
+export const GOAL_ERRORS = Object.freeze({ cells: 10, fibers: 8, dt: 0.5, rateHz: 120,
   toleranceMs, excScale: 3, inhScale: 0.05, tauRec: 5,
   slowRiseMs: 5, slowDecayMs: toleranceMs, eta: 0.2, targetHz: 1.5, tonicHz: 10.3, wMax: 40 });
 
 // Analytic population rest count for this layer; never estimated from probes.
-export const restCount = durationMs => ERRORS.targetHz * ERRORS.cells * durationMs / 1000;
-export const effectiveMiss = Mdev => Math.max(0, Mdev - 3 * Math.sqrt(restCount(WINDOW_MS)));
-export const effectiveNovelty = (Ndev, durationMs) => Math.max(0, Ndev - 3 * Math.sqrt(restCount(durationMs)));
+export const restCount = durationMs => GOAL_ERRORS.targetHz * GOAL_ERRORS.cells * durationMs / 1000;
 
-export class SpikingErrors {
+export class GoalErrors {
   constructor(ids, seed = 1) {
     this.ids = new TimeUnroll(ids).ids;
-    this.pending = []; this.t = null;
+    this.t = null;
     const pops = this.ids.flatMap((_, r) => [
-      ...['N', 'M'].map(k => ({ name: `${k}${r}`, n: ERRORS.cells })),
-      ...['R', 'P', 'D'].map(k => ({ name: `${k}${r}`, n: ERRORS.fibers, source: true })),
+      ...['N', 'M'].map(k => ({ name: `${k}${r}`, n: GOAL_ERRORS.cells })),
+      ...['R', 'P', 'D'].map(k => ({ name: `${k}${r}`, n: GOAL_ERRORS.fibers, source: true })),
     ]);
-    this.net = new SpikingNetwork({ pops, seed, dt: ERRORS.dt });
+    this.net = new SpikingNetwork({ pops, seed, dt: GOAL_ERRORS.dt });
     const connect = options => this.net.connect({ contacts: 10, pRelease: 0.3,
-      tauRec: ERRORS.tauRec, ...options });
+      tauRec: GOAL_ERRORS.tauRec, ...options });
     this.rows = this.ids.map((id, r) => {
       const names = Object.fromEntries(['N', 'M', 'R', 'P', 'D'].map(k => [k, `${k}${r}`]));
       for (const [from, to] of [['R', 'N'], ['D', 'M']]) {
-        connect({ from: names[from], to: names[to], scale: ERRORS.excScale });
+        connect({ from: names[from], to: names[to], scale: GOAL_ERRORS.excScale });
       }
-      const istdp = { eta: ERRORS.eta, target: ERRORS.targetHz, wMax: ERRORS.wMax };
+      const istdp = { eta: GOAL_ERRORS.eta, target: GOAL_ERRORS.targetHz, wMax: GOAL_ERRORS.wMax };
       const Ninh = connect({ from: names.P, to: names.N, kind: 'inh',
-        scale: ERRORS.inhScale, istdp });
+        scale: GOAL_ERRORS.inhScale, istdp });
       const Minh = connect({ from: names.R, to: names.M, kind: 'slow', E: -75,
-        tauR: ERRORS.slowRiseMs, tauD: ERRORS.slowDecayMs,
-        scale: ERRORS.inhScale, istdp: { ...istdp, tauPre: ERRORS.slowDecayMs } });
+        tauR: GOAL_ERRORS.slowRiseMs, tauD: GOAL_ERRORS.slowDecayMs,
+        scale: GOAL_ERRORS.inhScale, istdp: { ...istdp, tauPre: GOAL_ERRORS.slowDecayMs } });
       return { id, ...Object.fromEntries(Object.entries(names).map(([k, v]) => [k, this.net.idx(v)])), Ninh, Minh };
     });
   }
 
-  /** now: one onset strength per ordered ID (TimeUnroll col 0).
-   * created: FutureSlices.created, supplied exactly once, at creation.
-   * Integer window starts are inclusive: arrival 3200 => [2700,3700],
-   * deadline occupies the final labeled window [3700,3800).
-   * A matched onset sustains a shunt of that entry's deadline afferent until due.
-   * This bookkeeping is outside the neural tick, just like prediction scheduling.
-   */
-  step(t, now, created = [], { learn = false } = {}) {
-    if (!Number.isFinite(t) || t < 0 || t % WINDOW_MS ||
-        (this.t !== null && t !== this.t + WINDOW_MS) || now.length !== this.ids.length ||
-        !Array.from(now).every(s => Number.isFinite(s) && s >= 0 && s <= 1) ||
-        created.some(e => !this.ids.includes(e.B) || !Number.isFinite(e.tArrive) ||
-          e.tArrive < t || e.tArrive % WINDOW_MS || !Number.isFinite(e.strength) || e.strength < 0 || e.strength > 1)) {
-      throw new Error('Invalid error window or drives');
-    }
-    this.pending = [...this.pending, ...created.map(e => ({ ...e, matched: 0, remaining: e.strength }))]
-      .filter(e => t <= e.tArrive + ERRORS.toleranceMs);
-    const drives = this.rows.map((row, i) => {
-      const entries = this.pending.filter(e => e.B === row.id && t >= e.tArrive - ERRORS.toleranceMs);
-      for (const e of entries) {
-        e.matched = Math.max(e.matched, now[i]);
-        e.remaining = e.strength * Math.max(0, 1 - e.matched);
-      }
-      const prediction = Math.max(0, ...entries.map(e => e.strength));
-      const deadline = Math.max(0, ...entries.filter(e => t === e.tArrive + ERRORS.toleranceMs).map(e => e.remaining));
-      return { prediction, deadline };
-    });
-    return this.runDrives(t, now, drives, learn);
-  }
-
   /** Goal comparator: persistent goal excites M directly; reality inhibits M.
-   * Same populations, slow inhibition and afferent-gated iSTDP as prediction M.
-   * Use a separate instance: goals never join prediction eligibility/pending.
+   * Preserved goal-only topology, slow inhibition and afferent-gated iSTDP.
+   * Goal counts never enter prediction learning.
    */
   stepGoals(t, now, goals, { learn = false } = {}) {
     if (!Number.isFinite(t) || t < 0 || t % WINDOW_MS ||
@@ -92,9 +62,9 @@ export class SpikingErrors {
     const rates = new Float64Array(this.net.N);
     this.rows.forEach((row, i) => {
       const { prediction, deadline } = drives[i];
-      for (const kind of ['N', 'M']) for (const cell of row[kind]) rates[cell] = ERRORS.tonicHz;
+      for (const kind of ['N', 'M']) for (const cell of row[kind]) rates[cell] = GOAL_ERRORS.tonicHz;
       for (const [kind, strength] of [['R', now[i]], ['P', prediction], ['D', deadline]]) {
-        for (const cell of row[kind]) rates[cell] = ERRORS.rateHz * strength;
+        for (const cell of row[kind]) rates[cell] = GOAL_ERRORS.rateHz * strength;
       }
       // Each group targets only one feature/population, hence one afferent gate.
       // Frozen groups still advance Vogels traces and synaptic dynamics in M0.
@@ -113,21 +83,17 @@ export class SpikingErrors {
   }
 
   saveState() {
-    return structuredClone({ ids: this.ids, t: this.t, pending: this.pending, net: this.net.saveState() });
+    return structuredClone({ schema: 'goal-errors-v1', ids: this.ids, t: this.t, net: this.net.saveState() });
   }
 
   loadState(state) {
+    if (state?.schema !== 'goal-errors-v1') throw new Error('Unsupported goal error state');
     const s = structuredClone(state);
     if (JSON.stringify(s.ids) !== JSON.stringify(this.ids) ||
-        !(s.t === null || (Number.isFinite(s.t) && s.t >= 0 && s.t % WINDOW_MS === 0)) ||
-        !Array.isArray(s.pending) || s.pending.some(e => !this.ids.includes(e.B) ||
-          !Number.isFinite(e.tArrive) || e.tArrive < 0 || e.tArrive % WINDOW_MS ||
-          !Number.isFinite(e.strength) || e.strength < 0 || e.strength > 1 ||
-          !Number.isFinite(e.matched) || e.matched < 0 || e.matched > 1 ||
-          e.remaining !== e.strength * Math.max(0, 1 - e.matched))) {
-      throw new Error('Invalid error state');
+        !(s.t === null || (Number.isFinite(s.t) && s.t >= 0 && s.t % WINDOW_MS === 0))) {
+      throw new Error('Invalid goal error state');
     }
-    this.net.loadState(s.net); this.t = s.t; this.pending = s.pending;
+    this.net.loadState(s.net); this.t = s.t;
     return this;
   }
 }

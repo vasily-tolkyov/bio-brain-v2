@@ -1,7 +1,7 @@
 /** Frozen M9 closed loop. No goals or rehearsed actions enter the sensory/past path. */
 import { FutureSlices } from '../src/predict.mjs';
 import { GoalActions } from '../src/goals.mjs';
-import { SpikingErrors } from '../src/errors.mjs';
+import { SpikingNovelty } from '../src/novelty.mjs';
 import { ThreeFactor } from '../src/three-factor.mjs';
 import { actionId, presentWindow, discardHistory, checkEnv } from '../src/io.mjs';
 import { WINDOW_MS, LIT_THRESHOLD } from '../src/readout.mjs';
@@ -26,13 +26,13 @@ export function calibrateGoals(p) {
   return { ...GOAL_CALIBRATION, matchedSpikes: history };
 }
 
-export function goalPipeline(pipeline, baseline, seed, downward) {
+export function goalPipeline(pipeline, baseline, seed, downward, goalOptions) {
   const { layer1, layer2, output, mapping } = pipeline;
   const ids = mapping.map(a => a.id), featureIds = pipeline.teacher.mapping.map(a => a.id);
   const future = new FutureSlices(ids, downward ?? pipeline.downward);
-  const goal = new GoalActions(future, output.actions, featureIds, seed);
+  const goal = new GoalActions(future, output.actions, featureIds, seed, goalOptions);
   return { layer1, layer2, output, mapping, future, goal, t: 0,
-    errors: new SpikingErrors(ids, seed), factor: new ThreeFactor(future) };
+    errors: new SpikingNovelty(ids, seed), factor: new ThreeFactor(future) };
 }
 
 /** One causal window: last readout's drive executes, efference predicts, reality

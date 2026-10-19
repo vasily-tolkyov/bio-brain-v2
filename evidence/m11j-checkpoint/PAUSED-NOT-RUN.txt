@@ -1,0 +1,1 @@
+PAUSED BEFORE T2: user requested Codex handoff. This directory is only an overwrite guard, not experiment evidence. T2 has NOT RUN. Remove only this guard before authorized resume.

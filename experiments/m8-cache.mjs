@@ -16,7 +16,7 @@ const sources = ['src/downward.mjs', 'src/predict.mjs', 'src/learning.mjs', 'exp
   'src/io.mjs', 'src/output.mjs', 'src/envs/actions.mjs', 'src/layer.mjs',
   'src/unroll.mjs', 'src/readout.mjs', 'src/network.mjs', 'src/synapse.mjs',
   'src/stdp.mjs', 'src/neuron/lif.mjs', 'src/core/rng.mjs', 'src/core/state.mjs',
-  'src/errors.mjs', 'src/three-factor.mjs'];
+  'src/novelty.mjs', 'src/three-factor.mjs'];
 const signature = hash(sources.map(p => readFileSync(new URL(`../${p}`, import.meta.url))).join('\n'));
 export const saveLayer = layer => ({ ticks: layer.ticks, attractors: structuredClone(layer.attractors),
   replicas: layer.replicas.map(r => r.net.saveState()) });

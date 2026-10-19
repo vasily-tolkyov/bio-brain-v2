@@ -22,7 +22,7 @@ export function measurements(p) {
   const initial = structuredClone(down), history = [snapshot()];
   const peaks = slots.map((_, i) => ({ W: history[0][i], trial: 0, t: p.t, half: null, tenth: null }));
   let previous = new Map(down.weights.map(w => [w.ruleKey, { w, deltas: { ...w.deltas } }]));
-  const deltas = slots.map(() => ({ STDP: 0, N: 0, M: 0, clamp: 0 }));
+  const deltas = slots.map(() => ({ STDP: 0, N: 0, miss: 0, clamp: 0 }));
   return {
     observe(trial, t) {
       const live = new Map(p.downward.weights.map(w => [w.ruleKey, w]));

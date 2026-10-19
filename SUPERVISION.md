@@ -220,3 +220,63 @@ Prompts persist in /workspace/bio-brain-runs/codex-prompts/<M>.txt; launcher /wo
 - 04:52 CST M11f phase-1 launched (xhigh, prompt codex-prompts/M11f.txt, log logs/codex-M11f.log). Don't relaunch while alive.
 - 05:05 CST gpt-6-astra 'at capacity' on 10 launch attempts (04:43–05:05); background retry loop /tmp/m11f-retry.sh (log /tmp/m11f-retry.log), same model, every ~3 min up to 30 more tries.
 - 05:29 CST M11f launched after capacity retries (try 16).
+
+
+## M11g cloud rebuild final status
+
+Authorized native gpt-6-astra cloud reconstruction from verified142e8cf. The blocked CLI and user computer were not used. No commit/push. Original biological law is preserved under the user clarification permitting natural statistical trends without artificial target strengths. Runtime changes are calibrated below-floor pruning and per-edge action eligibility, including stale subgoal generation validation.
+
+Fresh calibration: seeds7/19/31,660/660 held-out matches, zero-control0/600, pooled canonical mean floor0.018958848087182577. N inhibition changed; M stayed.05. The floor is not a guarantee under recent-reality/live inhibition. Thirty isolated learning conditions and all planned seed7 neural phases were rerun from fresh teachers. Each phase preserved exact source/dependency hashes and was durably saved before the next long phase.
+
+Functional checks32/32 pass. Final quiet full suite109/110; unchanged M2 limit fails58.80ms versus50ms. Earlier55.88/56.24/62.86ms failures remain. Timed closure is byte-identical to baseline; failure cause is not established. No threshold or acceptance metric was loosened.
+
+Fresh M4 fails causal/bird ratio4.6415<5. Fresh R2 remains unresolved: light@5→bell survives45 true unmatched eligible deadlines at u=.1, allMeff0. Action gating blocks use but does not repair missing error signals. Seed7 extinction/recovery/jitter/alternating checks pass. Gates.2/.3/.4 each pass only3-repeat frozen screening from identical state; measured true-edge eligibility takes1/2/4hits. These results do not select a default. Gate.3 remains provisional, with a disclosed literal.1 floating-point validation edge case.
+
+Full multi-seed world, twenty-repeat frozen, and natural goal-driven acceptance are NOT RUN. Overall NOT ACCEPTED. See docs/m11g-rebuild.md and the final source/raw-evidence archive. Next changes require discussion.
+
+## M11h event learning, 2026-10-19
+
+User explicitly confirmed: retain learning N; remove prediction-learning M; settle each prediction directly; delete only at exact zero; retain goal/action M. Native gpt-6-astra xhigh on the authorized cloud. Original full checkpoint preserved. No CLI, user-computer work, commit or push.
+
+Learning M/D populations, connections, plasticity and readout are absent from the active learning path. Original N circuit, birth strength, hit timing law, decreasing weakening law and neuron-level rho STDP remain. Each overlapping prediction settles once. Persisted store-local generation identity prevents same-time rebirth credit transfer. Legacy learning snapshots explicitly reject. Goal-M matches the archived path in900 windows and42 full-state checks.
+
+Fresh N held-out quiet329/330 is the retained1100ms metric;55/330 matched trials contain a positive100ms creation-gate window. This is not55 actual births. No retuning. Bounded historical timing cases180/180; fresh causal/shuffled30 each, frozen probes, omission15 and rest300s completed from sealed sources. Across causal/shuffled/omission,223 live unmatched deadlines all receive negative miss ledger;203 removed generations reach exact zero. Original learned true edge dies on omission9. Full action-world acceptance is NOT RUN.
+
+Final full suite118/119: only unchanged M2 speed limit fails53.72ms>50ms. Earlier117/118 and79.38ms retained. The additional run follows restoration of an unchanged goal-side slow-receptor invariant, not a retry to obtain green. New M4 still fails true/max-bird weight ratio4.6415<5. Sensory rho rest drift remains disclosed. Overall NOT ACCEPTED. See docs/m11h-event-learning.md and the complete source/raw-evidence package.
+
+
+## M11i — continuous online continuation (2026-10-19)
+
+User authorized a new continuous-online test, not new runtime mechanisms. The
+M11h runtime, learning constants, exact-zero deletion and provisional action gate
+remain byte-identical to the sealed trained-state sources. Three predeclared
+environment seeds (7/19/31) cloned the same training-seed-7 complete state. Each
+ran 30 discrimination, 15 omission and 30 recovery slots without neural resets
+or experimental learning freezes. Schedules were sealed before execution.
+
+All 225 slots and all nine declared stage checks passed. There were 608 actual
+live-generation unmatched events, all with the original direct weakening; 564
+deleted generations ended at exactly zero. The original bird edge died in all
+three sequences. Original causal generations died after ten actual misses and
+were replaced, not resurrected, during recovery. Recovery retention was
+91.8990%, 92.7069%, and 92.4312% of the pre-omission weight. The six designated
+last-ten paired groups had 60/60 timely forecasts and matches, not a claim that
+all 120 paired slots already had predictions.
+
+The fivefold causal/bird endpoint comparison passed. The final environment-31
+bird edge was a new u=.1 generation with no subsequent source trigger yet; it
+was not silently discarded or tested until it disappeared. Noise-born weak
+forecasts still occurred: 30 bird-to-thunder forecasts in 24 of 60 bird-only
+control slots. No action loop ran. The .3 eligibility readout is descriptive only.
+
+Conclusion: PASS for this predeclared bounded online protocol; not a full-project
+acceptance or independent-training-seed generalization. Prior M2 speed failure
+and the original frozen comparison remain historical records. No commit/push.
+See docs/m11i-online.md and out/m11i-online for fixed schedules, full snapshots,
+raw audits, source/input hashes and recomputed evidence.
+
+## M11j — online action acceptance, paused at T1 checkpoint (2026-10-19)
+
+User authorized a fresh continuous closed-loop action test without runtime or parameter changes. The fixed protocol was independently reviewed and sealed before training. New current-version sensory/motor teachers and T1 30 trials completed. T1 has 90 exact command/execution/copy matches and no physical bell; source and input hashes stayed unchanged. T2, goal calibration and all autonomous normal/broken/restored stages have NOT RUN.
+
+The user then requested GitHub synchronization first, local Codex project execution/review without a foreground window on the user computer, and continued training/testing only on the cloud host. T1 was saved to Library. An explicit T2 overwrite guard stopped the automatic launcher before any T2 neural step. No runtime change, extra training, or acceptance relaxation was made. See docs/m11j-actions-online.md, docs/m11j-codex-handoff.md, docs/artifact-index.json, and evidence/m11j-checkpoint/.

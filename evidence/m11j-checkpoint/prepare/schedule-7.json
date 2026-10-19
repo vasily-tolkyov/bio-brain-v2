@@ -1,0 +1,1649 @@
+{
+  "schema": "m11j-action-schedule-v1",
+  "environmentSeed": 7,
+  "streams": {
+    "normal": 110007,
+    "broken": 120007,
+    "restored": 130007,
+    "bird": 140007
+  },
+  "start": 2040000,
+  "end": 2720000,
+  "duration": 680000,
+  "slots": [
+    {
+      "phase": "normal",
+      "kind": "light",
+      "start": 2040000,
+      "end": 2050000,
+      "index": 0,
+      "within": 1,
+      "events": [
+        {
+          "id": 1,
+          "g": "bird",
+          "start": 2044567,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "none",
+      "start": 2050000,
+      "end": 2060000,
+      "index": 1,
+      "within": 2,
+      "events": [
+        {
+          "id": 2,
+          "g": "bird",
+          "start": 2050592.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "light",
+      "start": 2060000,
+      "end": 2070000,
+      "index": 2,
+      "within": 3,
+      "events": [
+        {
+          "id": 3,
+          "g": "bird",
+          "start": 2064325.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bell",
+      "start": 2070000,
+      "end": 2080000,
+      "index": 3,
+      "within": 4,
+      "events": [
+        {
+          "id": 4,
+          "g": "bird",
+          "start": 2076673.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "light",
+      "start": 2080000,
+      "end": 2090000,
+      "index": 4,
+      "within": 5,
+      "events": [
+        {
+          "id": 5,
+          "g": "bird",
+          "start": 2083961,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bird",
+      "start": 2090000,
+      "end": 2100000,
+      "index": 5,
+      "within": 6,
+      "events": [
+        {
+          "id": 6,
+          "g": "bird",
+          "start": 2091819,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "none",
+      "start": 2100000,
+      "end": 2110000,
+      "index": 6,
+      "within": 7,
+      "events": [
+        {
+          "id": 7,
+          "g": "bird",
+          "start": 2106736.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "light",
+      "start": 2110000,
+      "end": 2120000,
+      "index": 7,
+      "within": 8,
+      "events": [
+        {
+          "id": 8,
+          "g": "bird",
+          "start": 2112960,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bird",
+      "start": 2120000,
+      "end": 2130000,
+      "index": 8,
+      "within": 9,
+      "events": [
+        {
+          "id": 9,
+          "g": "bird",
+          "start": 2124039.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bird",
+      "start": 2130000,
+      "end": 2140000,
+      "index": 9,
+      "within": 10,
+      "events": [
+        {
+          "id": 10,
+          "g": "bird",
+          "start": 2132247,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bird",
+      "start": 2140000,
+      "end": 2150000,
+      "index": 10,
+      "within": 11,
+      "events": [
+        {
+          "id": 11,
+          "g": "bird",
+          "start": 2143552,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bird",
+      "start": 2150000,
+      "end": 2160000,
+      "index": 11,
+      "within": 12,
+      "events": [
+        {
+          "id": 12,
+          "g": "bird",
+          "start": 2154060,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "none",
+      "start": 2160000,
+      "end": 2170000,
+      "index": 12,
+      "within": 13,
+      "events": [
+        {
+          "id": 13,
+          "g": "bird",
+          "start": 2167510.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bell",
+      "start": 2170000,
+      "end": 2180000,
+      "index": 13,
+      "within": 14,
+      "events": [
+        {
+          "id": 14,
+          "g": "bird",
+          "start": 2177595,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bell",
+      "start": 2180000,
+      "end": 2190000,
+      "index": 14,
+      "within": 15,
+      "events": [
+        {
+          "id": 15,
+          "g": "bird",
+          "start": 2182095.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "none",
+      "start": 2190000,
+      "end": 2200000,
+      "index": 15,
+      "within": 16,
+      "events": [
+        {
+          "id": 16,
+          "g": "bird",
+          "start": 2190017.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "light",
+      "start": 2200000,
+      "end": 2210000,
+      "index": 16,
+      "within": 17,
+      "events": [
+        {
+          "id": 17,
+          "g": "bird",
+          "start": 2207787,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "light",
+      "start": 2210000,
+      "end": 2220000,
+      "index": 17,
+      "within": 18,
+      "events": [
+        {
+          "id": 18,
+          "g": "bird",
+          "start": 2216541,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bird",
+      "start": 2220000,
+      "end": 2230000,
+      "index": 18,
+      "within": 19,
+      "events": [
+        {
+          "id": 19,
+          "g": "bird",
+          "start": 2226639.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "none",
+      "start": 2230000,
+      "end": 2240000,
+      "index": 19,
+      "within": 20,
+      "events": [
+        {
+          "id": 20,
+          "g": "bird",
+          "start": 2234826,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bell",
+      "start": 2240000,
+      "end": 2250000,
+      "index": 20,
+      "within": 21,
+      "events": [
+        {
+          "id": 21,
+          "g": "bird",
+          "start": 2247776.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "none",
+      "start": 2250000,
+      "end": 2260000,
+      "index": 21,
+      "within": 22,
+      "events": [
+        {
+          "id": 22,
+          "g": "bird",
+          "start": 2256809.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bell",
+      "start": 2260000,
+      "end": 2270000,
+      "index": 22,
+      "within": 23,
+      "events": [
+        {
+          "id": 23,
+          "g": "bird",
+          "start": 2265910.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "normal",
+      "kind": "bell",
+      "start": 2270000,
+      "end": 2280000,
+      "index": 23,
+      "within": 24,
+      "events": [
+        {
+          "id": 24,
+          "g": "bird",
+          "start": 2273745,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "none",
+      "start": 2280000,
+      "end": 2290000,
+      "index": 24,
+      "within": 1,
+      "events": [
+        {
+          "id": 25,
+          "g": "bird",
+          "start": 2281923.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "none",
+      "start": 2290000,
+      "end": 2300000,
+      "index": 25,
+      "within": 2,
+      "events": [
+        {
+          "id": 26,
+          "g": "bird",
+          "start": 2293136,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bell",
+      "start": 2300000,
+      "end": 2310000,
+      "index": 26,
+      "within": 3,
+      "events": [
+        {
+          "id": 27,
+          "g": "bird",
+          "start": 2306834,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "light",
+      "start": 2310000,
+      "end": 2320000,
+      "index": 27,
+      "within": 4,
+      "events": [
+        {
+          "id": 28,
+          "g": "bird",
+          "start": 2313723.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bell",
+      "start": 2320000,
+      "end": 2330000,
+      "index": 28,
+      "within": 5,
+      "events": [
+        {
+          "id": 29,
+          "g": "bird",
+          "start": 2322223,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bird",
+      "start": 2330000,
+      "end": 2340000,
+      "index": 29,
+      "within": 6,
+      "events": [
+        {
+          "id": 30,
+          "g": "bird",
+          "start": 2334789,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bird",
+      "start": 2340000,
+      "end": 2350000,
+      "index": 30,
+      "within": 7,
+      "events": [
+        {
+          "id": 31,
+          "g": "bird",
+          "start": 2341823.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bell",
+      "start": 2350000,
+      "end": 2360000,
+      "index": 31,
+      "within": 8,
+      "events": [
+        {
+          "id": 32,
+          "g": "bird",
+          "start": 2353477,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "none",
+      "start": 2360000,
+      "end": 2370000,
+      "index": 32,
+      "within": 9,
+      "events": [
+        {
+          "id": 33,
+          "g": "bird",
+          "start": 2366540.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bell",
+      "start": 2370000,
+      "end": 2380000,
+      "index": 33,
+      "within": 10,
+      "events": [
+        {
+          "id": 34,
+          "g": "bird",
+          "start": 2374262.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bird",
+      "start": 2380000,
+      "end": 2390000,
+      "index": 34,
+      "within": 11,
+      "events": [
+        {
+          "id": 35,
+          "g": "bird",
+          "start": 2384955.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "light",
+      "start": 2390000,
+      "end": 2400000,
+      "index": 35,
+      "within": 12,
+      "events": [
+        {
+          "id": 36,
+          "g": "bird",
+          "start": 2393463,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "light",
+      "start": 2400000,
+      "end": 2410000,
+      "index": 36,
+      "within": 13,
+      "events": [
+        {
+          "id": 37,
+          "g": "bird",
+          "start": 2407762,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "light",
+      "start": 2410000,
+      "end": 2420000,
+      "index": 37,
+      "within": 14,
+      "events": [
+        {
+          "id": 38,
+          "g": "bird",
+          "start": 2413401.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "light",
+      "start": 2420000,
+      "end": 2430000,
+      "index": 38,
+      "within": 15,
+      "events": [
+        {
+          "id": 39,
+          "g": "bird",
+          "start": 2424855,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "light",
+      "start": 2430000,
+      "end": 2440000,
+      "index": 39,
+      "within": 16,
+      "events": [
+        {
+          "id": 40,
+          "g": "bird",
+          "start": 2430908.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bell",
+      "start": 2440000,
+      "end": 2450000,
+      "index": 40,
+      "within": 17,
+      "events": [
+        {
+          "id": 41,
+          "g": "bird",
+          "start": 2440240.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "none",
+      "start": 2450000,
+      "end": 2460000,
+      "index": 41,
+      "within": 18,
+      "events": [
+        {
+          "id": 42,
+          "g": "bird",
+          "start": 2453378.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bell",
+      "start": 2460000,
+      "end": 2470000,
+      "index": 42,
+      "within": 19,
+      "events": [
+        {
+          "id": 43,
+          "g": "bird",
+          "start": 2465263,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "broken",
+      "kind": "bird",
+      "start": 2470000,
+      "end": 2480000,
+      "index": 43,
+      "within": 20,
+      "events": [
+        {
+          "id": 44,
+          "g": "bird",
+          "start": 2472851,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "light",
+      "start": 2480000,
+      "end": 2490000,
+      "index": 44,
+      "within": 1,
+      "events": [
+        {
+          "id": 45,
+          "g": "bird",
+          "start": 2485273.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bell",
+      "start": 2490000,
+      "end": 2500000,
+      "index": 45,
+      "within": 2,
+      "events": [
+        {
+          "id": 46,
+          "g": "bird",
+          "start": 2495893,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bell",
+      "start": 2500000,
+      "end": 2510000,
+      "index": 46,
+      "within": 3,
+      "events": [
+        {
+          "id": 47,
+          "g": "bird",
+          "start": 2501276,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "none",
+      "start": 2510000,
+      "end": 2520000,
+      "index": 47,
+      "within": 4,
+      "events": [
+        {
+          "id": 48,
+          "g": "bird",
+          "start": 2511546.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "none",
+      "start": 2520000,
+      "end": 2530000,
+      "index": 48,
+      "within": 5,
+      "events": [
+        {
+          "id": 49,
+          "g": "bird",
+          "start": 2526085,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bird",
+      "start": 2530000,
+      "end": 2540000,
+      "index": 49,
+      "within": 6,
+      "events": [
+        {
+          "id": 50,
+          "g": "bird",
+          "start": 2534932,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "light",
+      "start": 2540000,
+      "end": 2550000,
+      "index": 50,
+      "within": 7,
+      "events": [
+        {
+          "id": 51,
+          "g": "bird",
+          "start": 2540945,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bird",
+      "start": 2550000,
+      "end": 2560000,
+      "index": 51,
+      "within": 8,
+      "events": [
+        {
+          "id": 52,
+          "g": "bird",
+          "start": 2555115.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "none",
+      "start": 2560000,
+      "end": 2570000,
+      "index": 52,
+      "within": 9,
+      "events": [
+        {
+          "id": 53,
+          "g": "bird",
+          "start": 2565855,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bird",
+      "start": 2570000,
+      "end": 2580000,
+      "index": 53,
+      "within": 10,
+      "events": [
+        {
+          "id": 54,
+          "g": "bird",
+          "start": 2570587,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bird",
+      "start": 2580000,
+      "end": 2590000,
+      "index": 54,
+      "within": 11,
+      "events": [
+        {
+          "id": 55,
+          "g": "bird",
+          "start": 2580943.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "none",
+      "start": 2590000,
+      "end": 2600000,
+      "index": 55,
+      "within": 12,
+      "events": [
+        {
+          "id": 56,
+          "g": "bird",
+          "start": 2591308.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "light",
+      "start": 2600000,
+      "end": 2610000,
+      "index": 56,
+      "within": 13,
+      "events": [
+        {
+          "id": 57,
+          "g": "bird",
+          "start": 2605004,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "light",
+      "start": 2610000,
+      "end": 2620000,
+      "index": 57,
+      "within": 14,
+      "events": [
+        {
+          "id": 58,
+          "g": "bird",
+          "start": 2614258.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bell",
+      "start": 2620000,
+      "end": 2630000,
+      "index": 58,
+      "within": 15,
+      "events": [
+        {
+          "id": 59,
+          "g": "bird",
+          "start": 2623052.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "light",
+      "start": 2630000,
+      "end": 2640000,
+      "index": 59,
+      "within": 16,
+      "events": [
+        {
+          "id": 60,
+          "g": "bird",
+          "start": 2632876,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "none",
+      "start": 2640000,
+      "end": 2650000,
+      "index": 60,
+      "within": 17,
+      "events": [
+        {
+          "id": 61,
+          "g": "bird",
+          "start": 2640121.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bell",
+      "start": 2650000,
+      "end": 2660000,
+      "index": 61,
+      "within": 18,
+      "events": [
+        {
+          "id": 62,
+          "g": "bird",
+          "start": 2650071,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bell",
+      "start": 2660000,
+      "end": 2670000,
+      "index": 62,
+      "within": 19,
+      "events": [
+        {
+          "id": 63,
+          "g": "bird",
+          "start": 2661217,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bell",
+      "start": 2670000,
+      "end": 2680000,
+      "index": 63,
+      "within": 20,
+      "events": [
+        {
+          "id": 64,
+          "g": "bird",
+          "start": 2675758.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bird",
+      "start": 2680000,
+      "end": 2690000,
+      "index": 64,
+      "within": 21,
+      "events": [
+        {
+          "id": 65,
+          "g": "bird",
+          "start": 2680144.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "light",
+      "start": 2690000,
+      "end": 2700000,
+      "index": 65,
+      "within": 22,
+      "events": [
+        {
+          "id": 66,
+          "g": "bird",
+          "start": 2696095.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "bird",
+      "start": 2700000,
+      "end": 2710000,
+      "index": 66,
+      "within": 23,
+      "events": [
+        {
+          "id": 67,
+          "g": "bird",
+          "start": 2700119.5,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    },
+    {
+      "phase": "restored",
+      "kind": "none",
+      "start": 2710000,
+      "end": 2720000,
+      "index": 67,
+      "within": 24,
+      "events": [
+        {
+          "id": 68,
+          "g": "bird",
+          "start": 2717345,
+          "duration": 200,
+          "causeExecutionId": null
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "g": "bird",
+      "start": 2044567,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 2,
+      "g": "bird",
+      "start": 2050592.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 3,
+      "g": "bird",
+      "start": 2064325.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 4,
+      "g": "bird",
+      "start": 2076673.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 5,
+      "g": "bird",
+      "start": 2083961,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 6,
+      "g": "bird",
+      "start": 2091819,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 7,
+      "g": "bird",
+      "start": 2106736.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 8,
+      "g": "bird",
+      "start": 2112960,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 9,
+      "g": "bird",
+      "start": 2124039.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 10,
+      "g": "bird",
+      "start": 2132247,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 11,
+      "g": "bird",
+      "start": 2143552,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 12,
+      "g": "bird",
+      "start": 2154060,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 13,
+      "g": "bird",
+      "start": 2167510.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 14,
+      "g": "bird",
+      "start": 2177595,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 15,
+      "g": "bird",
+      "start": 2182095.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 16,
+      "g": "bird",
+      "start": 2190017.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 17,
+      "g": "bird",
+      "start": 2207787,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 18,
+      "g": "bird",
+      "start": 2216541,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 19,
+      "g": "bird",
+      "start": 2226639.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 20,
+      "g": "bird",
+      "start": 2234826,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 21,
+      "g": "bird",
+      "start": 2247776.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 22,
+      "g": "bird",
+      "start": 2256809.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 23,
+      "g": "bird",
+      "start": 2265910.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 24,
+      "g": "bird",
+      "start": 2273745,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 25,
+      "g": "bird",
+      "start": 2281923.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 26,
+      "g": "bird",
+      "start": 2293136,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 27,
+      "g": "bird",
+      "start": 2306834,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 28,
+      "g": "bird",
+      "start": 2313723.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 29,
+      "g": "bird",
+      "start": 2322223,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 30,
+      "g": "bird",
+      "start": 2334789,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 31,
+      "g": "bird",
+      "start": 2341823.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 32,
+      "g": "bird",
+      "start": 2353477,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 33,
+      "g": "bird",
+      "start": 2366540.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 34,
+      "g": "bird",
+      "start": 2374262.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 35,
+      "g": "bird",
+      "start": 2384955.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 36,
+      "g": "bird",
+      "start": 2393463,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 37,
+      "g": "bird",
+      "start": 2407762,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 38,
+      "g": "bird",
+      "start": 2413401.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 39,
+      "g": "bird",
+      "start": 2424855,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 40,
+      "g": "bird",
+      "start": 2430908.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 41,
+      "g": "bird",
+      "start": 2440240.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 42,
+      "g": "bird",
+      "start": 2453378.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 43,
+      "g": "bird",
+      "start": 2465263,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 44,
+      "g": "bird",
+      "start": 2472851,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 45,
+      "g": "bird",
+      "start": 2485273.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 46,
+      "g": "bird",
+      "start": 2495893,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 47,
+      "g": "bird",
+      "start": 2501276,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 48,
+      "g": "bird",
+      "start": 2511546.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 49,
+      "g": "bird",
+      "start": 2526085,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 50,
+      "g": "bird",
+      "start": 2534932,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 51,
+      "g": "bird",
+      "start": 2540945,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 52,
+      "g": "bird",
+      "start": 2555115.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 53,
+      "g": "bird",
+      "start": 2565855,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 54,
+      "g": "bird",
+      "start": 2570587,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 55,
+      "g": "bird",
+      "start": 2580943.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 56,
+      "g": "bird",
+      "start": 2591308.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 57,
+      "g": "bird",
+      "start": 2605004,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 58,
+      "g": "bird",
+      "start": 2614258.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 59,
+      "g": "bird",
+      "start": 2623052.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 60,
+      "g": "bird",
+      "start": 2632876,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 61,
+      "g": "bird",
+      "start": 2640121.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 62,
+      "g": "bird",
+      "start": 2650071,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 63,
+      "g": "bird",
+      "start": 2661217,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 64,
+      "g": "bird",
+      "start": 2675758.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 65,
+      "g": "bird",
+      "start": 2680144.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 66,
+      "g": "bird",
+      "start": 2696095.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 67,
+      "g": "bird",
+      "start": 2700119.5,
+      "duration": 200,
+      "causeExecutionId": null
+    },
+    {
+      "id": 68,
+      "g": "bird",
+      "start": 2717345,
+      "duration": 200,
+      "causeExecutionId": null
+    }
+  ]
+}

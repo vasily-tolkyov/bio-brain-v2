@@ -1,0 +1,134 @@
+{
+  "startedAt": "2026-10-19T10:41:47.494Z",
+  "argv": [
+    "T1"
+  ],
+  "sourceHashes": {
+    "experiments/m11a-runtime.mjs": "beb7265f33f95843f3a05c7244fb63e0ae3824ec2f2ceb0e5065b630a2bd6b83",
+    "experiments/m11j-actions-online.mjs": "14b79254815d2f081b4a3532dfbfe80bccb5dd3a2a3059a00f6dcc869552ea72",
+    "experiments/m11j-audit.mjs": "62dc7d5bdf6470551668c705ff424c441c5e0b50ebc383ad341a42553929f664",
+    "experiments/m11j-world.mjs": "bd0b488df62b957aef8bff44b1b729e52c94e9ddf127cfda0ebd959d6f640df5",
+    "experiments/m8-pipeline.mjs": "15ce9ac53e3246894f955570f313caf7f171a6a84d646b20f8c3da11dee74165",
+    "experiments/m9-pipeline.mjs": "ff384818c63d931a70ec0eda151772020713b58aa3d44433287b1d212bb57c8d",
+    "package.json": "cbe94a548bb1035c452531e68a43b697f7f46b2fe747542d757cbd8974388831",
+    "src/checkpoint.mjs": "12fae1a9e91eac1b31c8837ca6789a9d5be73e9b0314a1f884f0327c8a867a3a",
+    "src/core/check.mjs": "19add3ca46d7277bc95bbbc91172ca72a47bdbe5b74401658b64d0aaca5f2b5d",
+    "src/core/rng.mjs": "906c8ec32c572f0c9c30fc43242f0e3be99a1f160fa7884b5e016864cecc7416",
+    "src/core/state.mjs": "b302cccbf248120984522e92fe54337b358b7a779281d66c42360d39f0ce4022",
+    "src/downward.mjs": "15595376307eb8cfa07bf83537210c71f23ceb2fe844b69ecd813d11d285798f",
+    "src/envs/actions.mjs": "fed461b2b98c0617f50d15b8cdf475e6bf030914fd1ad189e44991c3595f9312",
+    "src/errors.mjs": "ae1b55a4320f049bf8177458beb07d225b215b192714b5e8316fb8d68fd8e26f",
+    "src/goals.mjs": "6f82f32d5c9b94a71faa84e612efe6b9b49233c31ba1ab4f16a2f9637882a4ba",
+    "src/io.mjs": "a3fe8d4c41b609940008cf57ccc2a278b2501008a3c4ae48c75c7d9d7cd00914",
+    "src/layer.mjs": "a521ca2424a19f630dfae3f72107d06793113abeff9215555d457e6ff2602b22",
+    "src/learning.mjs": "917d1613531d5285c4286963436b9d331703069d5f4e7effe3647e4433c32b5d",
+    "src/network.mjs": "6ceff87b308b04b0cbdcd9dc566e606d103f76e16c5b1725b79d0812f9649f48",
+    "src/neuron/lif.mjs": "b2f31a4edf5a2b0164c554de44b53275eeb44bfccd32e083bcb9b68b76892138",
+    "src/novelty.mjs": "e5740c5e7dd13e91ea2fcb87db13bb94f65e1d00b710f10f07ae8a99b578b548",
+    "src/output.mjs": "2ab8c628b342ac305e191f58e7c58ef34877d1c83a0a4ff09e2944f5f726bfe2",
+    "src/predict.mjs": "e9309f93d70b4eb8fbcdf40b37e0c1f197a9860004e28695c9f0d4796cbfa1a8",
+    "src/readout.mjs": "0156a3aa043f0047f7749ef2a3b8667230d486e36445cdff7fcf4b4318f87fb5",
+    "src/stdp.mjs": "4523193d69a5df86600f944587709c09d9708a14ddb37a7dc8edd530a8ca3603",
+    "src/synapse.mjs": "9cb89da4a9db3902d4fd8a1e9307540fa1a741fde55ac4c8a49cf94dd48bb35f",
+    "src/three-factor.mjs": "969a1248848fbbb2e9346512f807e9c0fadf7acbdecae0115c0e53b4e3ec1b1a",
+    "src/unroll.mjs": "488f5c2f01564e283781bd0ea384fa69a1253263970882207dd5e96238d5a71f",
+    "src/world.mjs": "0c48c1c9895e08dfc60ad8f788f94675e360d81a8488f106600ab00ea04056ab"
+  },
+  "inputs": [
+    {
+      "file": "out/m11j-actions-online/prepare/plan.json",
+      "sha256": "71f48da4251008b40accb6bc1c5b13a0718fcf7047c911e832c8704994b76f98",
+      "manifest": "out/m11j-actions-online/prepare/artifact-manifest.json",
+      "manifestSHA256": "8ab4e8219822bce457841074fb9416c28d87951bac4ac815fb0e3a558ca98876"
+    },
+    {
+      "file": "out/m11j-actions-online/prepare/provenance.json",
+      "sha256": "12e391f6cdacf3733da64279d4219c3ab859eec278e928357f2c5e937e73210b",
+      "manifest": "out/m11j-actions-online/prepare/artifact-manifest.json",
+      "manifestSHA256": "8ab4e8219822bce457841074fb9416c28d87951bac4ac815fb0e3a558ca98876"
+    },
+    {
+      "file": "out/m11j-actions-online/teachers/complete.json",
+      "sha256": "fb6ee92b06abed2813178f47ae4e877a71babee88449b8272c75bec148387217",
+      "manifest": "out/m11j-actions-online/teachers/artifact-manifest.json",
+      "manifestSHA256": "9a9c9ab945cf9c0e206190f7bb85c34dd0a47d49031899310676ca621e911129"
+    },
+    {
+      "file": "out/m11j-actions-online/teachers/provenance.json",
+      "sha256": "d10e28bbddab37986906da975444c927b6c07437566c74be976971a1ec0a6392",
+      "manifest": "out/m11j-actions-online/teachers/artifact-manifest.json",
+      "manifestSHA256": "9a9c9ab945cf9c0e206190f7bb85c34dd0a47d49031899310676ca621e911129"
+    },
+    {
+      "file": "out/m11j-actions-online/teachers/state.json",
+      "sha256": "6a211ef56193ceacad247e0264e0a9e6738039a8f0259abf611a00a0a64f1393",
+      "manifest": "out/m11j-actions-online/teachers/artifact-manifest.json",
+      "manifestSHA256": "9a9c9ab945cf9c0e206190f7bb85c34dd0a47d49031899310676ca621e911129"
+    },
+    {
+      "file": "out/m11j-actions-online/prepare/teacher-schedule.json",
+      "sha256": "b50decad775682fd9f921b8647c9a8cf6e0d139e4d75d2c0b1c0a9c832b0310d",
+      "manifest": "out/m11j-actions-online/prepare/artifact-manifest.json",
+      "manifestSHA256": "8ab4e8219822bce457841074fb9416c28d87951bac4ac815fb0e3a558ca98876"
+    }
+  ],
+  "plan": {
+    "schema": "m11j-plan-v1",
+    "trainingSeed": 7,
+    "environmentSeeds": [
+      7,
+      19,
+      31
+    ],
+    "initialState": "Fresh M11h actionPipeline. No old M caches.",
+    "preparation": {
+      "teachers": "Original sensory and motor isolated teachers, once.",
+      "T1": "30 x 34000ms; original seed7 teacherSchedule press/wave/idle; press causes light +3000ms, no bell.",
+      "T2": "Same neural/rule state, 30 x 34000ms observation-only light then bell +1000ms, no motor commands. Environment curriculum changes but no neural reset.",
+      "goalCalibration": "Original 24 paired GoalErrors trials only; independent calibration time labels end at trained p.t-100. No sensory/rule advances or weights changed by this calibration."
+    },
+    "autonomous": {
+      "slotMs": 10000,
+      "counts": {
+        "normal": {
+          "light": 6,
+          "bell": 6,
+          "none": 6,
+          "bird": 6
+        },
+        "broken": {
+          "light": 6,
+          "bell": 6,
+          "none": 4,
+          "bird": 4
+        },
+        "restored": {
+          "light": 6,
+          "bell": 6,
+          "none": 6,
+          "bird": 6
+        }
+      },
+      "slotsPerSequence": 68,
+      "replication": "Three environmental schedules clone the same fresh training-seed7 prepared full state. Not independent neural training seeds.",
+      "world": "One independent bird 0..8000ms in every slot. Only actual press causes light+3000ms and bell+4000ms, except presses during broken phase cause neither. Wave/idle have no effects. Queued effects survive all boundaries. No external light/bell.",
+      "goals": "Write fixed root strength1 at slot start. Caller cancels any unmet root at 10s, explicitly not success. Keep all neural, motor, pending and environment state.",
+      "learning": "advanceActions normal sensory/layer2/N/downward learning, then real-onset goal.step. Preserve original fixed motor readout and calibrated goal-M learning semantics; no experimental freeze, no advanceGoals frozen probe.",
+      "actionThreshold": 0.3
+    },
+    "criteria": {
+      "preparation": "T1 actual execution must exactly match all 90 declared motor commands, T2 has zero executions; exact copy checks both. T1 has no bell physical effect. At preparation end press->light and light->bell must each have an edge >=.3. No extra teaching if these fail; autonomous result is conditional on preparation and cannot erase its failure.",
+      "integrity": "Complete all fixed slots, 100 normal learning windows each; no runtime/input/source changes, sensory/layer2 EE never experimentally frozen; exactly one identity/strength-matched copy iff actual execution, and world execution records match. An executed goal-selected action must have positive current appliedDrive and a positive eligible-rule contribution; zero-current-drive motor carryover is reported separately, not assumed to be a valid current path.",
+      "normalRestored": "Light and bell each causal completion >=90%, first action press >=90%. With 6 per kind these require 6/6. Each target slot at most one press and no other action. None/bird slots zero actions.",
+      "causalCompletion": "An actual press in this slot must cause a physical target event and corresponding positive decoded onset. Onset is associated to physical event if its 100ms readout span overlaps event, allowing one preceding window for neural latency: event.start < t+100 and event.end > t-100. Preserve all candidates; ambiguous multiple causes do not count as causal success. Old queued effects cannot count as current-slot action success.",
+      "completion": "No actual execution after natural root completion in any slot. Caller cancellation is not completion.",
+      "wait": "Observation only, no new controller lock. Record actual prediction instances and path generations. While an unmatched forecast caused by a prior execution and on that execution goal chain remains before its full +500ms deadline, no further execution for the same root request instance (slotIndex plus root ID). Old-request predictions remain in the controller but are not called duplicate actions for a new request. Include later sensory-link forecasts from the same physical execution; require each used rule >=existing .3 when emitted. Weak unrelated forecasts remain raw but do not extend this criterion.",
+      "broken": "Must observe at least one actual press followed by a live unmatched action-result prediction. In the final 4 predeclared light/bell broken slots, zero ineffective actions. Goals need not succeed during failure. Do not extend stage if this fails.",
+      "learning": "Every live unmatched prediction uses unchanged sequential missDelta; no matched charge; deletion W exactly0; no old generation resurrection or transfer. 1e-12 only observational arithmetic tolerance.",
+      "restoration": "Same normal criteria without teacher rescue or manual exploration. If action drive stops and cannot collect new outcomes, report failure and remaining path strengths; do not force exploration or zero residual rules.",
+      "aggregate": "All applicable checks across all 9 stages required. .3 is retained provisional setting, not newly chosen optimal default. Full fixed trajectories and transient wrong/repeated actions remain visible."
+    },
+    "limits": "This is a bounded closed-loop test. Shared initial training seed, 3 environmental schedules, no new mechanism or parameter. Previous M2 timing failure remains. No performance retest requested."
+  },
+  "gitHead": "142e8cf56461c053d533e5cb54445216e3e2f19b"
+}

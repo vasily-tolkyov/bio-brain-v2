@@ -4,7 +4,9 @@ import { pathToFileURL } from 'node:url';
 import { checker } from '../src/core/check.mjs';
 import { FutureSlices, GoalRow } from '../src/predict.mjs';
 import { GoalActions, GOALS, upwardDrive } from '../src/goals.mjs';
-import { SpikingErrors } from '../src/errors.mjs';
+import { SpikingNetwork } from '../src/network.mjs';
+import { GoalErrors } from '../src/errors.mjs';
+import { SpikingNovelty } from '../src/novelty.mjs';
 import { sat } from '../src/three-factor.mjs';
 import { OutputLayer } from '../src/output.mjs';
 import { actionId, teachGroups } from '../src/io.mjs';
@@ -44,7 +46,7 @@ export function verifyGoals() {
       rule('observation', 'x', 4, 1), rule(actionId('jump'), 'y', 3, 1)] };
     const counts = [{ id: 'x', effective: 100 }, { id: 'y', effective: 0 }];
     const drive = () => upwardDrive(down, ['turn', 'jump'], counts);
-    assert.ok(Math.abs(drive()[0] - GOALS.gain * sat(100) * 0.6) < 1e-12);
+    assert.ok(Math.abs(drive()[0] - GOALS.gain * sat(100) * 0.4) < 1e-12);
     assert.equal(drive()[1], 0);
     down.weights[0].W = 0.6 * DOWNWARD.wMax;
     assert.equal(drive()[0], 1);
@@ -56,21 +58,22 @@ export function verifyGoals() {
     assert.equal(drive()[0], 0, 'Signed goal terms cancel before clipping');
     down.weights.length = 0; assert.deepEqual([...drive()], [0, 0]);
   });
-  test('Motor U uses the fixed prediction scale, including tiny chance weights', () => {
-    const down = { weights: [rule(actionId('turn'), 'x', 6, 0.2),
-      rule(actionId('jump'), 'x', 2, 0.1)] };
-    const counts = [{ id: 'x', effective: 100 }, { id: 'y', effective: 100 }];
-    const drive = () => [...upwardDrive(down, ['turn', 'jump'], counts)];
-    assert.deepEqual(drive(), [0.1 * GOALS.gain, 0.05 * GOALS.gain]);
-    down.weights.push(rule('x', 'y', 4, 1), rule('y', 'x', 3, 1));
-    assert.deepEqual(drive(), [0.1 * GOALS.gain, 0.05 * GOALS.gain]);
-    down.weights[0].W = 0.00001 * DOWNWARD.wMax;
-    assert.deepEqual(drive(), [0.000005 * GOALS.gain, 0.05 * GOALS.gain]);
+  test('Per-edge action gate is inclusive, configurable and cannot be bypassed by pooling', () => {
+    const down = { weights: Array.from({ length: 8 }, (_, k) => rule(actionId('turn'), 'x', k + 1, 0.2)) };
+    const counts = [{ id: 'x', effective: 100 }];
+    assert.equal(upwardDrive(down, ['turn'], counts)[0], 0);
+    assert.equal(upwardDrive(down, ['turn'], counts, 0.2)[0], 1);
+    down.weights = [rule(actionId('turn'), 'x', 1, GOALS.actionThreshold)];
+    assert.equal(upwardDrive(down, ['turn'], counts)[0], GOALS.gain * sat(100) * GOALS.actionThreshold);
+    for (const threshold of [0, DOWNWARD.wInit / DOWNWARD.wMax, NaN, Infinity, 1.01]) {
+      assert.throws(() => upwardDrive(down, ['turn'], counts, threshold));
+      assert.throws(() => new GoalActions(new FutureSlices(['x']), ['turn'], ['x'], 7, { actionThreshold: threshold }));
+    }
   });
   test('Pending prediction suppresses effective goal-M, including M5 arrival tolerance, then expires', () => {
     const A = actionId('turn'), f = new FutureSlices(['x', A],
       {  weights: [rule(A, 'x', 2, 0.5)] });
-    const g = new GoalActions(f, ['turn'], ['x'], 7), e = new SpikingErrors(f.past.ids, 7);
+    const g = new GoalActions(f, ['turn'], ['x'], 7), e = new SpikingNovelty(f.past.ids, 7);
     g.goals.write('x');
     const before = g.errors.net.groups.map(w => [...w.scale]);
     for (let t = 0; t <= 900; t += 100) {
@@ -96,7 +99,7 @@ export function verifyGoals() {
     assert.deepEqual(g.errors.net.groups.map(w => [...w.scale]), before);
   });
   test('Goal-M uses excitatory goal / inhibitory reality and the same afferent iSTDP gate', () => {
-    const e = new SpikingErrors(['x'], 19), row = e.rows[0];
+    const e = new GoalErrors(['x'], 19), row = e.rows[0];
     assert.ok(e.stepGoals(0, [0], [1])[0].M > 0);
     row.Minh.y.fill(2);
     const before = [...row.Minh.scale];
@@ -106,28 +109,33 @@ export function verifyGoals() {
     assert.equal(row.Minh.frozen, false); assert.notDeepEqual([...row.Minh.scale], before);
     assert.throws(() => e.stepGoals(400, [0], [1]));
   });
-  test('Weak goal-driven rehearsal makes no env action/copy/prediction and changes no weights', () => {
+  test('Gated and weak eligible goal drive make no env action/copy/prediction or weight changes', () => {
+    for (const [edge, root] of [[0.1, 1], [0.5, 0.001]]) {
     const output = new OutputLayer(['turn', 'jump'], 7), teacher = teachGroups(['tone', 'odor'], 7);
     const ids = [...teacher.mapping.map(a => a.id), ...output.actions.map(actionId)];
     const f = new FutureSlices(ids, {
       weights: [rule(ids[1], ids[0], 4, 1), rule(ids[0], ids[1], 4, 1),
-        rule(actionId('turn'), ids[1], 2, 0.001)] });
+        rule(actionId('turn'), ids[1], 2, edge)] });
     const goal = new GoalActions(f, output.actions, teacher.mapping.map(a => a.id), 7);
     const p = { layer1: teacher.layer, output, future: f, goal, t: 0,
-      errors: new SpikingErrors(ids, 7), factor: new ThreeFactor(f) };
-    let calls = 0;
+      errors: new SpikingNovelty(ids, 7), factor: new ThreeFactor(f) };
+    let calls = 0, positiveDriveWindows = 0;
     const env = { features: ['tone', 'odor'], actions: output.actions,
       step(ms, action) { if (action !== null) calls++; return { features: {} }; } };
     const before = [weights(p.layer1), weights(output.layer), structuredClone(f.downward)];
-    goal.goals.write(ids[0]);
+    goal.goals.write(ids[0], root);
     for (let i = 0; i < 10; i++) {
       const r = advanceGoals(p, env);
-      assert.equal(r.executed.action, null); assert.ok(r.goal.drive[0] > 0);
+      assert.equal(r.executed.action, null);
+      positiveDriveWindows += Number(r.goal.drive[0] > 0);
       assert.equal(f.past.entries.length, 0); assert.equal(f.entries.length, 0);
     }
+    if (edge < GOALS.actionThreshold) assert.equal(positiveDriveWindows, 0);
+    else assert.ok(positiveDriveWindows > 0, 'Eligible edges retain weak graded rehearsal');
     assert.equal(calls, 0); assert.equal(goal.goals.entries.size, 2);
     assert.equal(goal.links.get(ids[0]).kind, 'SUBGOAL');
     assert.deepEqual([weights(p.layer1), weights(output.layer), f.downward], before);
+    }
   });
   test('Best observation precondition writes a scaled persistent subgoal, with no past input', () => {
     const g = planner(['x', 'y', 'z'], [rule('y', 'x', 4, 1), rule('z', 'x', 6, 0.6),
@@ -138,7 +146,8 @@ export function verifyGoals() {
       const r = g.step(t, []);
       assert.deepEqual([...g.goals.entries], [['x', 0.8], ['y', 0.8 * (DOWNWARD.wMax) / DOWNWARD.wMax]]);
       assert.deepEqual(g.links.get('x'), { kind: 'SUBGOAL', id: 'y', parent: 'x',
-        strength: 0.8 * DOWNWARD.wMax / DOWNWARD.wMax, depth: 2, satisfied: false });
+        strength: 0.8 * DOWNWARD.wMax / DOWNWARD.wMax, depth: 2, satisfied: false,
+        ruleKey: JSON.stringify(['y', 4, 'x']), generation: 1, createdAt: 0 });
       assert.equal(r.written.length, t === 0 ? 1 : 0); assert.ok(r.drive[0] > 0);
       assert.equal(g.future.past.entries.length, 0); assert.equal(g.future.entries.length, 0);
       assert.ok(g.future.past.lines(t).every(x => x === 0));
@@ -153,8 +162,8 @@ export function verifyGoals() {
         ...(mode === 'direct' ? [rule(actionId('turn'), 'x', 6, 0.5)] : [])]);
       g.recursion = mode !== 'disabled'; g.goals.write('x');
       const r = g.step(0, []);
-      assert.equal(r.written.length, mode !== 'disabled' ? 1 : 0);
-      assert.equal(g.goals.entries.size, mode !== 'disabled' ? 2 : 1);
+      assert.equal(r.written.length, mode === 'direct' ? 1 : 0);
+      assert.equal(g.goals.entries.size, mode === 'direct' ? 2 : 1);
       if (mode !== 'direct') assert.equal(r.drive[0], 0);
     }
   });
@@ -207,6 +216,73 @@ export function verifyGoals() {
       assert.equal(env.executed.length, phase === 'T2' ? 0 : 1);
       if (phase === 'T2') assert.throws(() => env.step(100, 'press'));
     }
+  });
+  test('Existing subgoal paths are invalidated when an upstream edge weakens, disappears or changes generation', () => {
+    for (const mode of ['weaken', 'delete', 'replace', 'same-time-replace']) {
+      const g = planner(['x', 'y', 'z'], [rule('y', 'x', 4, 0.8), rule('z', 'y', 4, 0.8),
+        rule(actionId('turn'), 'z', 4, 1)]);
+      g.goals.write('x'); g.step(0, []);
+      g.counts = [{ id: 'z', effective: 100 }];
+      assert.ok(g.motorDrive()[0] > 0);
+      const down = g.future.downward;
+      if (mode === 'weaken') down.weights[0].W = 0.2 * DOWNWARD.wMax;
+      if (mode === 'delete') down.weights.shift();
+      if (mode === 'replace') down.weights[0] = { ...down.weights[0], createdAt: 100 };
+      if (mode === 'same-time-replace') down.weights[0] = { ...down.weights[0], generation: down.nextGeneration++ };
+      assert.equal(g.motorDrive()[0], 0);
+      assert.deepEqual([...g.goals.entries.keys()], ['x']); assert.equal(g.links.size, 0);
+    }
+  });
+  test('An explicitly promoted root survives invalidation of its former parent path', () => {
+    const g = planner(['x', 'y'], [rule('y', 'x', 4, 0.8), rule(actionId('turn'), 'y', 4, 1)]);
+    g.goals.write('x'); g.step(0, []); g.goals.write('y', 0.5);
+    g.future.downward.weights[0].W = 0.2 * DOWNWARD.wMax;
+    g.counts = [{ id: 'y', effective: 100 }];
+    assert.ok(g.motorDrive()[0] > 0); assert.equal(g.goals.entries.get('y'), 0.5);
+    assert.equal(g.links.size, 0); assert.equal(g.goals.parents.has('y'), false);
+  });
+  test('Subthreshold observation edges do not pool into subgoals', () => {
+    const g = planner(['x', 'y'], Array.from({ length: 8 }, (_, k) => rule('y', 'x', k + 1, 0.2)));
+    g.goals.write('x'); g.step(0, []);
+    assert.equal(g.links.size, 0); assert.deepEqual([...g.goals.entries.keys()], ['x']);
+  });
+  test('Below-gate predictions and real matched learning are independent of the action threshold', () => {
+    const states = [];
+    for (const actionThreshold of [0.2, 0.4]) {
+      const A = actionId('turn'), f = new FutureSlices([A, 'x'], { weights: [rule(A, 'x', 4, 0.1)] });
+      const learner = new ThreeFactor(f), errors = new SpikingNovelty(f.past.ids, 7);
+      const g = new GoalActions(f, ['turn'], ['x'], 7, { actionThreshold });
+      const emitted = []; g.goals.write('x');
+      for (let t = 0; t <= 1400; t += 100) {
+        f.update(t, t === 0 ? [{ id: A, strength: 0.5 }] : t === 800 ? [{ id: 'x', strength: 1 }] : []);
+        emitted.push(...structuredClone(f.created));
+        const lines = f.past.lines(t), counts = errors.step(t, [lines[0], lines[9]], f.created);
+        learner.step(t, counts, errors.pending);
+        g.step(t, f.past.entries.filter(e => e.tOnset === t), errors.pending);
+      }
+      assert.ok(Math.abs(emitted[0].strength - 0.05) < 1e-12);
+      assert.ok(f.downward.weights.find(w => w.A === A && w.B === 'x').deltas.STDP > 0);
+      assert.equal(g.actionThreshold, actionThreshold);
+      states.push({ emitted, store: f.downward, learner: learner.saveState(), comparator: errors.saveState() });
+    }
+    assert.deepEqual(states[0], states[1]);
+  });
+  test('Slow inhibitory conductance persists, never excites, and round-trips with its reversal', () => {
+    const make = (E = -75) => {
+      const net = new SpikingNetwork({ dt: 0.5, pops: [{ name: 'X', n: 1, source: true }, { name: 'M', n: 1 }] });
+      net.connect({ from: 'X', to: 'M', kind: 'slow', E, tauR: 5, tauD: 500,
+        tauRec: 5, contacts: 10, scale: 5 });
+      return net;
+    };
+    const a = make();
+    a.run(100, { rate: i => i === 0 ? 120 : 0 });
+    a.run(500);
+    assert.ok(a.V[1] < -65 && a.V[1] >= -75); assert.equal(a.spikes[1].length, 0);
+    const saved = JSON.parse(JSON.stringify(a.saveState())), b = make().loadState(saved);
+    a.run(100); b.run(100);
+    assert.deepEqual(a.saveState(), b.saveState());
+    assert.throws(() => make(0).loadState(saved), /topology/);
+    assert.throws(() => make().connect({ from: 'X', to: 'M', kind: 'slow', E: 0, istdp: {} }));
   });
   return c.done();
 }

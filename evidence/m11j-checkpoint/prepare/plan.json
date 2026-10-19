@@ -1,0 +1,58 @@
+{
+  "schema": "m11j-plan-v1",
+  "trainingSeed": 7,
+  "environmentSeeds": [
+    7,
+    19,
+    31
+  ],
+  "initialState": "Fresh M11h actionPipeline. No old M caches.",
+  "preparation": {
+    "teachers": "Original sensory and motor isolated teachers, once.",
+    "T1": "30 x 34000ms; original seed7 teacherSchedule press/wave/idle; press causes light +3000ms, no bell.",
+    "T2": "Same neural/rule state, 30 x 34000ms observation-only light then bell +1000ms, no motor commands. Environment curriculum changes but no neural reset.",
+    "goalCalibration": "Original 24 paired GoalErrors trials only; independent calibration time labels end at trained p.t-100. No sensory/rule advances or weights changed by this calibration."
+  },
+  "autonomous": {
+    "slotMs": 10000,
+    "counts": {
+      "normal": {
+        "light": 6,
+        "bell": 6,
+        "none": 6,
+        "bird": 6
+      },
+      "broken": {
+        "light": 6,
+        "bell": 6,
+        "none": 4,
+        "bird": 4
+      },
+      "restored": {
+        "light": 6,
+        "bell": 6,
+        "none": 6,
+        "bird": 6
+      }
+    },
+    "slotsPerSequence": 68,
+    "replication": "Three environmental schedules clone the same fresh training-seed7 prepared full state. Not independent neural training seeds.",
+    "world": "One independent bird 0..8000ms in every slot. Only actual press causes light+3000ms and bell+4000ms, except presses during broken phase cause neither. Wave/idle have no effects. Queued effects survive all boundaries. No external light/bell.",
+    "goals": "Write fixed root strength1 at slot start. Caller cancels any unmet root at 10s, explicitly not success. Keep all neural, motor, pending and environment state.",
+    "learning": "advanceActions normal sensory/layer2/N/downward learning, then real-onset goal.step. Preserve original fixed motor readout and calibrated goal-M learning semantics; no experimental freeze, no advanceGoals frozen probe.",
+    "actionThreshold": 0.3
+  },
+  "criteria": {
+    "preparation": "T1 actual execution must exactly match all 90 declared motor commands, T2 has zero executions; exact copy checks both. T1 has no bell physical effect. At preparation end press->light and light->bell must each have an edge >=.3. No extra teaching if these fail; autonomous result is conditional on preparation and cannot erase its failure.",
+    "integrity": "Complete all fixed slots, 100 normal learning windows each; no runtime/input/source changes, sensory/layer2 EE never experimentally frozen; exactly one identity/strength-matched copy iff actual execution, and world execution records match. An executed goal-selected action must have positive current appliedDrive and a positive eligible-rule contribution; zero-current-drive motor carryover is reported separately, not assumed to be a valid current path.",
+    "normalRestored": "Light and bell each causal completion >=90%, first action press >=90%. With 6 per kind these require 6/6. Each target slot at most one press and no other action. None/bird slots zero actions.",
+    "causalCompletion": "An actual press in this slot must cause a physical target event and corresponding positive decoded onset. Onset is associated to physical event if its 100ms readout span overlaps event, allowing one preceding window for neural latency: event.start < t+100 and event.end > t-100. Preserve all candidates; ambiguous multiple causes do not count as causal success. Old queued effects cannot count as current-slot action success.",
+    "completion": "No actual execution after natural root completion in any slot. Caller cancellation is not completion.",
+    "wait": "Observation only, no new controller lock. Record actual prediction instances and path generations. While an unmatched forecast caused by a prior execution and on that execution goal chain remains before its full +500ms deadline, no further execution for the same root request instance (slotIndex plus root ID). Old-request predictions remain in the controller but are not called duplicate actions for a new request. Include later sensory-link forecasts from the same physical execution; require each used rule >=existing .3 when emitted. Weak unrelated forecasts remain raw but do not extend this criterion.",
+    "broken": "Must observe at least one actual press followed by a live unmatched action-result prediction. In the final 4 predeclared light/bell broken slots, zero ineffective actions. Goals need not succeed during failure. Do not extend stage if this fails.",
+    "learning": "Every live unmatched prediction uses unchanged sequential missDelta; no matched charge; deletion W exactly0; no old generation resurrection or transfer. 1e-12 only observational arithmetic tolerance.",
+    "restoration": "Same normal criteria without teacher rescue or manual exploration. If action drive stops and cannot collect new outcomes, report failure and remaining path strengths; do not force exploration or zero residual rules.",
+    "aggregate": "All applicable checks across all 9 stages required. .3 is retained provisional setting, not newly chosen optimal default. Full fixed trajectories and transient wrong/repeated actions remain visible."
+  },
+  "limits": "This is a bounded closed-loop test. Shared initial training seed, 3 environmental schedules, no new mechanism or parameter. Previous M2 timing failure remains. No performance retest requested."
+}

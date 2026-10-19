@@ -7,6 +7,7 @@ import { probeChain } from './m10-probe.mjs';
 import { SEEDS, TRAIN_TRIALS, saveLayer } from './m8-cache.mjs';
 import { chainEnv, ACTION_WORLD } from '../src/envs/actions.mjs';
 import { saveLearning } from '../src/learning.mjs';
+import { NOVELTY } from '../src/novelty.mjs';
 import { PROTOCOL, teacherSchedule, advanceExtinction } from './m11a-runtime.mjs';
 import { measurements } from './m11a-measure.mjs';
 
@@ -16,12 +17,13 @@ export function runSeed(seed, directory) {
   const schedule = teacherSchedule(seed, p.env.actions, TRAIN_TRIALS, PROTOCOL.trials);
   const worldStart = p.t, measure = measurements(p), trials = [], copies = [];
   for (let trial = 1; trial <= PROTOCOL.trials; trial++) {
-    const start = p.t, sample = { trial, start, N: 0, M: 0, learningWindows: 0, onsets: [] };
+    const start = p.t, sample = { trial, start, N: 0, unmatchedDeadlines: 0, learningWindows: 0, onsets: [] };
     while (p.t < start + ACTION_WORLD.slotMs) {
       const r = advanceExtinction(p, schedule.get(p.t - worldStart));
       measure.observe(trial, r.t);
       sample.N += r.counts.reduce((n, c) => n + c.N, 0);
-      sample.M += r.counts.reduce((n, c) => n + c.M, 0);
+      sample.unmatchedDeadlines += p.errors.pending.filter(e =>
+        e.tArrive + NOVELTY.toleranceMs === r.t && e.matched === 0).length;
       sample.learningWindows += Number(r.learn); sample.onsets.push(...r.onsets);
       copies.push(...r.onsets.filter(e => typeof e.id === 'string').map(e =>
         ({ t: e.tOnset - worldStart, action: e.id.slice(7) })));

@@ -1,21 +1,31 @@
 /** Goal-M -> symmetric upward index -> M8 motors, once per P7 window. */
 import { DOWNWARD } from './downward.mjs';
 import { GoalRow } from './predict.mjs';
-import { SpikingErrors } from './errors.mjs';
+import { GoalErrors } from './errors.mjs';
 import { sat } from './three-factor.mjs';
 import { actionId } from './io.mjs';
 
 const clip = x => Math.max(0, Math.min(1, x));
-export const GOALS = Object.freeze({ maxDepth: 3, gain: 3 }); // Includes the caller's root.
+// .3 is an experimental default, pending user selection after gate comparisons.
+export const GOALS = Object.freeze({ maxDepth: 3, gain: 3, actionThreshold: 0.3 });
+const checkedThreshold = threshold => {
+  if (!Number.isFinite(threshold) || threshold <= DOWNWARD.wInit / DOWNWARD.wMax || threshold > 1) {
+    throw new Error('Action threshold must exceed newborn strength and be at most one');
+  }
+  return threshold;
+};
+const eligible = (w, threshold) => w.W / DOWNWARD.wMax >= threshold;
 
 /** U is a view of the very same W objects, with no second weights or learning.
  * Prediction, subgoals and motor drive use the same fixed layer scale.
  */
-export function upwardDrive(downward, actions, counts) {
+export function upwardDrive(downward, actions, counts, actionThreshold = GOALS.actionThreshold) {
+  checkedThreshold(actionThreshold);
   const drive = new Float64Array(actions.length);
   const indices = new Map(actions.map((a, i) => [actionId(a), i]));
   const errors = new Map(counts.map(c => [c.id, sat(c.effective)]));
   for (const w of downward.weights) {
+    if (!eligible(w, actionThreshold)) continue; // Filter each edge BEFORE pooling.
     const i = indices.get(w.A);
     if (i !== undefined) drive[i] += (errors.get(w.B) ?? 0) * w.W / DOWNWARD.wMax;
   }
@@ -23,11 +33,12 @@ export function upwardDrive(downward, actions, counts) {
 }
 
 export class GoalActions {
-  constructor(future, actions, featureIds, seed = 1) {
+  constructor(future, actions, featureIds, seed = 1, { actionThreshold = GOALS.actionThreshold } = {}) {
     this.future = future;
     this.actions = [...actions];
+    this.actionThreshold = checkedThreshold(actionThreshold);
     this.goals = new GoalRow(featureIds);
-    this.errors = new SpikingErrors(featureIds, seed);
+    this.errors = new GoalErrors(featureIds, seed);
     this.counts = [];
     this.recursion = true;
     this.links = new Map(); // parent -> SUBGOAL; retain satisfaction until parent clears.
@@ -38,13 +49,19 @@ export class GoalActions {
    * root-first, so cancellation cascades before any queued motor drive is used.
    */
   prune() {
-    for (const [parent, link] of this.links) if (!this.goals.entries.has(parent)) {
-      if (!link.satisfied) this.goals.cancel(link.id);
-      this.links.delete(parent);
+    for (const [parent, link] of this.links) {
+      const source = this.future.downward.weights.find(w => w.ruleKey === link.ruleKey &&
+        w.generation === link.generation && w.createdAt === link.createdAt && eligible(w, this.actionThreshold));
+      if (!this.goals.entries.has(parent) || !source) {
+        // Explicitly rewritten root goals no longer belong to this path.
+        if (this.goals.parents.get(link.id) === parent) this.goals.cancel(link.id);
+        this.links.delete(parent);
+      }
     }
   }
 
   expand(id, stack = [id]) {
+    this.prune();
     if (!this.goals.entries.has(id) || stack.length >= GOALS.maxDepth) return;
     const old = this.links.get(id);
     if (old) {
@@ -52,14 +69,14 @@ export class GoalActions {
       return;
     }
     const down = this.future.downward;
-    const rules = down.weights.filter(w => w.B === id);
+    const rules = down.weights.filter(w => w.B === id && eligible(w, this.actionThreshold));
     const best = rules.filter(w => this.goals.ids.includes(w.A))
       .reduce((best, w) => !best || w.W > best.W ? w : best, null);
     if (!best || stack.includes(best.A) || this.goals.entries.has(best.A)) return;
     const strength = this.goals.entries.get(id) * best.W / DOWNWARD.wMax;
     const link = { kind: 'SUBGOAL', id: best.A, parent: id, strength,
-      depth: stack.length + 1, satisfied: false };
-    this.goals.write(best.A, strength);
+      depth: stack.length + 1, satisfied: false, ruleKey: best.ruleKey, generation: best.generation, createdAt: best.createdAt };
+    this.goals.write(best.A, strength, id);
     this.links.set(id, link); this.written.push({ ...link });
     this.expand(best.A, [...stack, best.A]);
   }
@@ -76,7 +93,7 @@ export class GoalActions {
   motorDrive() {
     this.prune();
     return upwardDrive(this.future.downward, this.actions, this.counts.map(c =>
-      ({ ...c, effective: this.goals.entries.has(c.id) ? c.effective : 0 })));
+      ({ ...c, effective: this.goals.entries.has(c.id) ? c.effective : 0 })), this.actionThreshold);
   }
 
   /** Reality onsets satisfy goals BEFORE computing next window's action drive.

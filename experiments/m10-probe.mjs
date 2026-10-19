@@ -14,9 +14,9 @@ const weights = p => JSON.stringify([
   ...[p.errors, p.goal.errors].flatMap(e => e.net.groups.map(g => [...g.scale])), p.future.downward,
 ]);
 
-export function probeChain(pipeline, baseline, seed, phases, endState, repeats = PROTOCOL.trials) {
+export function probeChain(pipeline, baseline, seed, phases, endState, repeats = PROTOCOL.trials, goalOptions) {
   const downward = endState?.downward ?? pipeline.downward;
-  const p = goalPipeline(pipeline, baseline, seed, downward), calibration = calibrateGoals(p);
+  const p = goalPipeline(pipeline, baseline, seed, downward, goalOptions), calibration = calibrateGoals(p);
   // M11a probes the continued store, including weak entries, and the
   // frozen calibrated comparator. Quiet boundary; probe clocks start afresh.
   if (endState) p.errors.net.loadState(endState.errors.net);
@@ -92,7 +92,8 @@ export function probeChain(pipeline, baseline, seed, phases, endState, repeats =
     s.stackEmptyFraction >= 0.9 &&
     (s.kind === 'bell' ? s.subgoalsWritten >= 0.9 * s.probes : s.goalSpikesPerWindowAfterOnset <= 0.1) :
     s.kind === 'bird' || s.actions === 0);
-  return { seed, pass, falseActions, frozen: true, calibration, summaries, trials, downward: p.future.downward };
+  return { seed, pass, falseActions, frozen: true, actionThreshold: p.goal.actionThreshold,
+    calibration, summaries, trials, downward: p.future.downward };
 }
 
 function targetFraction(subset, test) { return subset.filter(test).length / subset.length; }

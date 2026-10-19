@@ -56,11 +56,17 @@ operations run between readout windows, outside the neural tick loop.
 
 ## Calibration and actions
 
-`src/errors.mjs` compares reality with arriving predictions using novelty and
-miss populations. `src/three-factor.mjs` creates connections from novelty,
-reinforces matched predictions, and weakens unmatched predictions at their
-deadlines. The current M11f pilot is documented in
-[its report](docs/m11f-pilot.md), including failed criteria and unfinished work.
+`src/novelty.mjs` retains only the spiking novelty (N) comparator for prediction
+learning. Its per-prediction ledger records actual onsets within the inclusive
+arrival-centred window. `src/three-factor.mjs` creates connections when N exceeds
+its unchanged noise deadband, reinforces the first real match, and directly
+weakens each unmatched instance at its deadline. No neural M or M threshold gates
+this learning. Connections are deleted only at exact zero; each generation has a
+store-local persistent identity. `src/errors.mjs` is now explicitly goal-only and
+retains the original action-driving M circuit without changing its amplitude.
+See the [current event-learning report](docs/m11h-event-learning.md). The
+[historical M11f pilot](docs/m11f-pilot.md) records the earlier mechanism and its
+failed criteria; it is not current validation.
 
 `src/goals.mjs` handles goal drive and bounded subgoal recursion.
 `src/output.mjs` implements motor readout and execution; `src/io.mjs` connects
@@ -81,6 +87,7 @@ observations and efference copies to the shared feature interface.
 
 Run `npm test` for the verification suite. Run individual experiment scripts with
 `node experiments/<script>.mjs`; inspect each script and its milestone report for
-arguments and required cached artifacts. Some experiments depend on earlier
-teacher checkpoints. Existing links into ignored `out/` refer to local artifacts
+arguments and required cached artifacts. Historical learning-M scripts require
+their archived runtime; old learning snapshots are explicitly incompatible.
+Some experiments depend on earlier teacher checkpoints. Existing links into ignored `out/` refer to local artifacts
 and will require those artifacts to be regenerated or distributed separately.

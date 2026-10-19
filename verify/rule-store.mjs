@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { pathToFileURL } from 'node:url';
 import { checker } from '../src/core/check.mjs';
-import { createDownward, newConnection, strengthenDownward, DOWNWARD, plasticityBoost } from '../src/downward.mjs';
+import { createDownward, newConnection, registerConnection, strengthenDownward, DOWNWARD, plasticityBoost } from '../src/downward.mjs';
 import { AttractorLayer } from '../src/layer.mjs';
 import { attachLearning, learnWindow, saveLearning, loadLearning } from '../src/learning.mjs';
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-12, `${a} != ${b}`);
@@ -47,7 +47,12 @@ export function verifyRuleStore() {
     }
     assert.equal(p.gate.value, 0); assert.ok(hit > DOWNWARD.wInit);
     assert.ok(p.downward.weights.every(w => !('hit' in w.deltas)));
-    const saved = saveLearning(p); loadLearning(p, JSON.parse(JSON.stringify(saved)));
+    assert.equal(p.errors.constructor.name, 'SpikingNovelty');
+    assert.ok(Object.keys(p.errors.net.pops).every(name => !/^[MD]/.test(name)));
+    const saved = saveLearning(p);
+    assert.throws(() => loadLearning(p, { ...saved, schema: undefined }), /legacy M states/);
+    assert.deepEqual(saveLearning(p), saved);
+    loadLearning(p, JSON.parse(JSON.stringify(saved)));
     assert.deepEqual(saveLearning(p), saved);
     for (const field of ['threshold', 'noise', 'maxW']) assert.equal(field in p.downward, false);
   });
@@ -65,7 +70,7 @@ export function verifyRuleStore() {
   test('Ungated learned L2 and downward W stay fixed in silent rest after calcium settles', () => {
     const ids = ['a', 'b'], layer = new AttractorLayer({ n: 18, R: 1, level: 2, seed: 7 });
     const p = attachLearning({ mapping: ids.map(id => ({ id })), layer2: layer, t: 0 }, 7);
-    p.downward.weights.push(newConnection('a', 1, 'b', 0));
+    p.downward.weights.push(registerConnection(p.downward, newConnection('a', 1, 'b', 0)));
     const lines = new Float64Array(18); lines[1] = lines[9] = 1;
     layer.run(500, lines); layer.run(1000);
     const before = [...layer.replicas[0].EE.stdp.rho], W = structuredClone(p.downward);
