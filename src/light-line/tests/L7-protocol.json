@@ -1,0 +1,21 @@
+{
+  "id": "L7-sealed-continuation-v1",
+  "seeds": [7, 19, 31],
+  "developmentSeed": 101,
+  "windowsPerCut": 100,
+  "cuts": [
+    {"name":"mid-io-segment","window":1,"phase":"sample","ticks":73},
+    {"name":"before-optical-commit","window":1,"phase":"sensory","opticalTicks":0},
+    {"name":"after-optical-commit","window":1,"phase":"sensory","opticalTicks":1},
+    {"name":"cue-boundary","window":2},
+    {"name":"delayed-future","window":4},
+    {"name":"first-match","window":35},
+    {"name":"inclusive-deadline","window":13},
+    {"name":"connection-deletion","window":14},
+    {"name":"connection-rebirth","window":29},
+    {"name":"pending-action-goal","window":32},
+    {"name":"body-trace","window":41},
+    {"name":"drive-ownership","window":31},
+    {"name":"goal-parent-link","window":46}
+  ]
+}

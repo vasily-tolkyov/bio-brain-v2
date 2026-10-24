@@ -1,0 +1,8 @@
+{
+  "schema": "light-line-v1",
+  "catalogueVersion": "contrast-M2-v1",
+  "ioMs": 0.5,
+  "windowMs": 100,
+  "cacheRoot": "out/light-line",
+  "legacyMigration": false
+}

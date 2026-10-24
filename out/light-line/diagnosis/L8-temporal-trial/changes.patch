@@ -1,0 +1,265 @@
+--- a/src/light-line/temporal-config.mjs
++++ b/src/light-line/temporal-config.mjs
+@@ -1,8 +1,12 @@
+-/** L3 routing/cadence only. The accepted core and L1/L2 remain byte frozen. */
++/** L8 development trial: rho(10)=.75 from zero without depression.
++ * rho(n)=1-.8**(dose*n); the core and lower-layer dose stay unchanged.
++ * Authorization: diagnosis/L8-temporal-trial/PROPOSAL-applied.md. */
++export const TEMPORAL_DOSE = Math.log(.25) / (10 * Math.log(.8));
++
+ export const TEMPORAL_DEFAULTS = Object.freeze({
+   columns: 9,
+   expiryMs: 12800 * Math.SQRT2,
+   learning: 'positive-onset',
+-  continuous: Object.freeze({ cadenceMs: .5, strengthScale: .1 }),
+-  minimumExclusiveCells: 3,
++  continuous: Object.freeze({ cadenceMs: .5, strengthScale: TEMPORAL_DOSE }),
++  minimumExclusiveCells: 1,
+ });
+--- a/src/light-line/temporal-stack.mjs
++++ b/src/light-line/temporal-stack.mjs
+@@ -1,6 +1,7 @@
+ import { CORE_OPTIONS } from './config.mjs';
+ import { VisualAttractorLayer } from './visual-layer.mjs';
+ import { TimeUnroll } from './unroll.mjs';
++import { TEMPORAL_DEFAULTS } from './temporal-config.mjs';
+ import { SliceRetina, DELAY_LAYOUT, tileTimeCopies, placeSnapshot } from './retina.mjs';
+ 
+ export const STACK_DEFAULTS = Object.freeze({ carrier: 1 / 6,
+@@ -29,10 +30,13 @@
+   #events = [];
+   #carrier;
+ 
++  // An explicit continuous option still configures both layers unless overridden.
++  // Default calibration applies only to temporal channels, preserving the snapshot fixture.
+   constructor({ seed = 7, carrier = STACK_DEFAULTS.carrier,
+-    continuous = STACK_DEFAULTS.continuous } = {}) {
+-    this.#lower = new VisualAttractorLayer({ seed, pixels: 27, carrier, continuous });
+-    this.#upper = new VisualAttractorLayer({ seed, pixels: 243, carrier, continuous, level: 2 });
++    continuous, temporalContinuous = continuous ?? TEMPORAL_DEFAULTS.continuous } = {}) {
++    this.#lower = new VisualAttractorLayer({ seed, pixels: 27, carrier,
++      continuous: continuous ?? STACK_DEFAULTS.continuous });
++    this.#upper = new VisualAttractorLayer({ seed, pixels: 243, carrier, continuous: temporalContinuous, level: 2 });
+     this.#carrier = carrier;
+   }
+ 
+--- a/src/light-line/temporal.mjs
++++ b/src/light-line/temporal.mjs
+@@ -146,7 +146,7 @@
+   requireSeparable(left, right) {
+     const relation = this.relation(left, right);
+     if (relation.targetExclusive.length < TEMPORAL_DEFAULTS.minimumExclusiveCells) {
+-      throw new RangeError('Port capacity: fewer than three target-exclusive cells');
++      throw new RangeError(`Port capacity: fewer than ${TEMPORAL_DEFAULTS.minimumExclusiveCells} target-exclusive cells`);
+     }
+     return relation;
+   }
+--- /dev/null
++++ b/src/light-line/tests/L8-temporal-gate.mjs
+@@ -0,0 +1,46 @@
++import { TEMPORAL_DEFAULTS } from '../temporal-config.mjs';
++import { protocol } from './L8-common.mjs';
++
++const cells = values => values.flatMap((v, i) => v > 0 ? [i] : []);
++const mean = values => values.length && values.every(Number.isFinite)
++  ? values.reduce((s, v) => s + v, 0) / values.length : null;
++
++/** Development-only amendment. Membership comes from supplied target input,
++ * never the completed target field. Keep all metrics when a predicate fails.
++ * The historical L8-r2 auditor and protocol are deliberately preserved. */
++export function temporalTrialGate(data, minimumExclusiveCells = TEMPORAL_DEFAULTS.minimumExclusiveCells) {
++  const metrics = data.arms.map(arm => {
++    const target = cells(arm.target.selected.values), gains = [];
++    for (let k = 0; k < 9; k++) for (const event of [0, 2]) {
++      const rows = arm.probes.filter(p => p.k === k && p.event === event).map(p => {
++        const sources = cells(p.result.selected.values), exclusive = target.filter(i => !sources.includes(i));
++        const brightness = exclusive.map(i => p.result.field.brightness[i]);
++        const lit = exclusive.filter(i => p.result.field.brightness[i] > protocol.gates.theta);
++        return { probe: p.probe, sources, exclusive, shared: target.filter(i => sources.includes(i)),
++          denominator: exclusive.length, brightness, lit, numerator: lit.length,
++          meanB: mean(brightness), coverage: exclusive.length ? lit.length / exclusive.length : null };
++      });
++      gains.push({ k, event, meanB: mean(rows.map(r => r.meanB)), coverage: mean(rows.map(r => r.coverage)), rows });
++    }
++    return { name: arm.name, target, targetFieldLit: arm.target.field.lit, gains };
++  });
++  const gain = (name, event, k) => metrics.find(m => m.name === name)?.gains.find(g => g.event === event && g.k === k);
++  const causal = gain('causal', 0, 6), shuffled = gain('shuffled', 0, 6), distractor = gain('causal', 2, 6), reverse = gain('reverse', 0, 6);
++  const valid = g => g?.rows.length === protocol.nextItemProbes && Number.isFinite(g.meanB)
++    && g.rows.every(r => r.denominator > 0 && Number.isFinite(r.coverage));
++  const profile = metrics.find(m => m.name === 'causal')?.gains.filter(g => g.event === 0) ?? [];
++  const checks = [
++    { name: 'identifiable-target-exclusive-denominator', pass: metrics.length === 3
++      && ['causal', 'shuffled', 'reverse'].every(name => metrics.filter(m => m.name === name).length === 1)
++      && metrics.every(m => m.gains.every(g => valid(g)
++        && g.rows.every(r => r.denominator >= minimumExclusiveCells))) },
++    { name: 'A@6-completion', pass: valid(causal) && causal.rows.every(r => r.coverage >= protocol.gates.completion) },
++    { name: 'causal-k6-peak', pass: valid(causal) && profile.every(g => valid(g) && causal.meanB >= g.meanB) },
++    { name: 'causal-minus-shuffled', pass: valid(causal) && valid(shuffled) && causal.meanB - shuffled.meanB >= protocol.gates.temporalGain },
++    { name: 'causal-minus-distractor', pass: valid(causal) && valid(distractor) && causal.meanB - distractor.meanB >= protocol.gates.temporalGain },
++    { name: 'reverse-coverage', pass: valid(reverse) && reverse.rows.every(r => r.coverage <= protocol.gates.spill) },
++  ].map(c => ({ ...c, pass: Boolean(c.pass) }));
++  return { pass: checks.every(c => c.pass), minimumExclusiveCells, membership: 'positive supplied target input',
++    thresholds: { theta: protocol.gates.theta, completion: protocol.gates.completion,
++      gain: protocol.gates.temporalGain, reverseCoverage: protocol.gates.spill }, checks, metrics };
++}
+--- /dev/null
++++ b/src/light-line/tests/L8-temporal-trial.mjs
+@@ -0,0 +1,90 @@
++import assert from 'node:assert/strict';
++import { pathToFileURL } from 'node:url';
++import { temporalStorm } from './L8-suite.mjs';
++import { SavedAudit } from './L8-audit.mjs';
++import { read, write, hash, sha, schedule, files } from './L8-common.mjs';
++import { temporalTrialGate } from './L8-temporal-gate.mjs';
++import { TEMPORAL_DEFAULTS, TEMPORAL_DOSE } from '../temporal-config.mjs';
++
++export const TRIAL_ROOT = 'out/light-line/diagnosis/L8-temporal-trial';
++const BASELINE = 'out/light-line/acceptance/L8/development/r2';
++
++function auditTemporal(data) {
++  const a = new SavedAudit(), checks = [], exposure = [];
++  const check = (name, fn) => {
++    try { fn(); checks.push({ name, pass: true }); }
++    catch (e) { checks.push({ name, pass: false, reason: e.message }); }
++  };
++  check('identical-arm-initial-state', () => {
++    assert.equal(hash(data.arms[0].initial), hash(data.arms[1].initial));
++    assert.equal(hash(data.arms[0].initial), hash(data.arms[2].initial));
++  });
++  for (const arm of data.arms) {
++    check(`${arm.name}:rho-color-samples`, () => exposure.push({ name: arm.name,
++      ...a.rho(arm.presentations, arm.channels.upper) }));
++    check(`${arm.name}:fields-and-paths`, () => {
++      for (const p of [...arm.probes.map(p => p.result), arm.target]) a.field(arm.channels.upper,
++        [...p.selected.values, ...Array(250 - p.selected.values.length).fill(0)], 1 / 6, p.field);
++      arm.cleared.field.brightness.forEach((v, i) => a.near(v, arm.cleared.selected.values[i] ?? 0));
++    });
++    // Preserve the original membership assertion, including contrast=M2.
++    check(`${arm.name}:original-temporal-membership`, () => a.higherMembers(arm));
++  }
++  return { pass: checks.every(c => c.pass), checks, exposure, maxError: a.maxError,
++    arithmetic: a.arithmetic, fields: a.fields, matureCounts: data.arms.map(a => ({ name: a.name, M2: a.M2.length })) };
++}
++
++export function runTemporalTrial() {
++  const seed = 101, savedSchedule = read(`${BASELINE}/schedule.json`);
++  assert.equal(savedSchedule.seed, seed);
++  assert.deepEqual(savedSchedule, schedule(seed), 'Reuse exactly the original development schedule');
++  const before = read(`${BASELINE}/temporal.json.gz`);
++  assert.ok(before.arms.every(a => a.presentations.every(p => p.strengthScale === .1)));
++  // This is the only model branch run: no full-suite/acceptance runner or other seed.
++  console.log('Running temporalStorm development seed 101 (30 trials per arm).');
++  const after = temporalStorm(seed, savedSchedule);
++  write(`${TRIAL_ROOT}/temporal-after.json.gz`, after);
++  write(`${TRIAL_ROOT}/schedule.json`, savedSchedule);
++  const invariants = after.arms.map((a, i) => {
++    const b = before.arms[i];
++    assert.equal(a.name, b.name);
++    assert.deepEqual(a.initial, b.initial);
++    assert.deepEqual(a.lowerPresentations, b.lowerPresentations);
++    assert.deepEqual(a.channels.lower, b.channels.lower);
++    assert.deepEqual(a.presentations.map(({ strengthScale, ...p }) => p),
++      b.presentations.map(({ strengthScale, ...p }) => p));
++    assert.ok(a.presentations.every(p => p.strengthScale === TEMPORAL_DOSE));
++    return { name: a.name, identicalInitialState: true, identicalLowerLearning: true,
++      identicalUpperEventsExceptDose: true, upperEvents: a.presentations.length };
++  });
++  const beforeHistorical = temporalTrialGate(before, 3), beforeAmended = temporalTrialGate(before);
++  const afterAmended = temporalTrialGate(after), auditBefore = auditTemporal(before), auditAfter = auditTemporal(after);
++  const oldAudit = read(`${BASELINE}/audit.json`);
++  const result = { trial: 'L8-temporal-trial', seed, officialAcceptanceRevision: false,
++    historicalL8: 'FAIL L8-r2; unchanged', settings: TEMPORAL_DEFAULTS,
++    baseline: { file: `${BASELINE}/temporal.json.gz`, sha256: sha(`${BASELINE}/temporal.json.gz`) },
++    math: { dose: TEMPORAL_DOSE, coLit: 'rho_next = 1 - (1-rho) * 0.8^dose',
++      oneEnd: 'rho_next = rho * 0.96^dose', neither: 'rho_next = rho',
++      fromZeroNoDepression: 'rho_n = 1 - 0.25^(n/10)',
++      perCoLitComplementMultiplier: .8 ** TEMPORAL_DOSE, perOneEndMultiplier: .96 ** TEMPORAL_DOSE,
++      samples: [0, 1, 5, 10, 20, 30, 50, 100].map(n => ({ n, oldRho: 1 - .8 ** (.1 * n), rho: 1 - .8 ** (TEMPORAL_DOSE * n) })) },
++    invariants, beforeHistorical, beforeAmended, afterAmended, auditBefore, auditAfter,
++    temporalPass: afterAmended.pass && auditAfter.pass,
++    unrerunHistoricalFailures: oldAudit.decisions.filter(d => !d.pass && !d.name.startsWith('temporal-')),
++    sourceSha256: Object.fromEntries(files('src/light-line').map(p => [p, sha(p)])) };
++  write(`${TRIAL_ROOT}/result.json`, result);
++  const summary = gate => {
++    const g = (name, event) => gate.metrics.find(m => m.name === name).gains.find(g => g.k === 6 && g.event === event);
++    return { pass: gate.pass, exclusive: g('causal', 0).rows[0].exclusive,
++      A6_B: g('causal', 0).meanB, completion: g('causal', 0).coverage,
++      shuffled_B: g('shuffled', 0).meanB, distractor_B: g('causal', 2).meanB, reverse_B: g('reverse', 0).meanB };
++  };
++  console.log(JSON.stringify({ before: summary(beforeHistorical), gateOnly: summary(beforeAmended),
++    after: summary(afterAmended), arithmeticAndMembership: auditAfter.pass, temporalPass: result.temporalPass }, null, 2));
++  return result;
++}
++
++if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
++  assert.equal(process.argv.length, 2, 'Fixed seed 101 and diagnosis destination; no CLI overrides');
++  runTemporalTrial();
++}
+--- /dev/null
++++ b/tests/light-line/L8-temporal-trial.test.mjs
+@@ -0,0 +1,64 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { TemporalStack } from '../../src/light-line/temporal-stack.mjs';
++import { temporalTrialGate } from '../../src/light-line/tests/L8-temporal-gate.mjs';
++
++const pixels = (...ids) => Array.from({ length: 27 }, (_, i) => Number(ids.includes(i)));
++
++test('actual temporal channels reach .75 at ten co-lit onsets and saturate with decreasing increments', () => {
++  const stack = new TemporalStack({ seed: 101 }).freezeSnapshot();
++  assert.equal(stack.parameters.lower.continuous.strengthScale, .1);
++  let prior = 0, lastIncrement = 1;
++  for (let n = 1; n <= 100; n++) {
++    stack.observe((n - 1) * 25000, pixels(0, 1));
++    stack.observe((n - 1) * 25000 + 100, pixels());
++    const rho = stack.channels().upper.find(e => e.i === 0 && e.j === 1).rho;
++    assert.ok(rho > prior && rho < 1);
++    assert.ok(rho - prior < lastIncrement);
++    if (n === 10) assert.ok(Math.abs(rho - .75) < 1e-12);
++    if (n === 20) assert.ok(Math.abs(rho - .9375) < 1e-12);
++    if (n === 30) assert.ok(Math.abs(rho - .984375) < 1e-12);
++    lastIncrement = rho - prior; prior = rho;
++  }
++  assert.ok(prior > .999999);
++  assert.equal(stack.presentations.length, 100, 'Blank and held time create no learning opportunities');
++  stack.observe(2500000, pixels(0));
++  const depressed = stack.channels().upper.find(e => e.i === 0 && e.j === 1);
++  assert.ok(Math.abs(depressed.rho - prior * .96 ** stack.parameters.upper.continuous.strengthScale) < 1e-12);
++  assert.equal(depressed.samples.length, 100, 'Depression adds no color samples');
++  assert.deepEqual(stack.channels().lower, []);
++});
++
++function fixture({ exclusive = true, targetBrightness = .4 } = {}) {
++  const brightness = (value = 0) => [1, value, 0, 0];
++  return { arms: ['causal', 'shuffled', 'reverse'].map(name => ({ name,
++    // A completed target field includes an extra cell; that cell must not enter membership.
++    target: { selected: { values: [0, 1, 0, 0] }, field: { lit: [1, 3] } },
++    probes: Array.from({ length: 20 }, (_, probe) => Array.from({ length: 9 }, (_, k) => [0, 2].map(event => ({
++      probe, k, event, result: { selected: { values: exclusive ? [1, 0, 0, 0] : [0, 1, 0, 0] },
++        field: { brightness: brightness(name === 'causal' && event === 0 && k === 6 ? targetBrightness : 0) } },
++    })))).flat(2),
++  })) };
++}
++
++test('one exclusive radiating input cell passes, with input membership and unchanged completion threshold', () => {
++  const result = temporalTrialGate(fixture());
++  assert.equal(result.minimumExclusiveCells, 1);
++  assert.equal(result.pass, true);
++  assert.deepEqual(result.metrics[0].target, [1]);
++  const historical = temporalTrialGate(fixture(), 3);
++  assert.equal(historical.pass, false);
++  assert.equal(historical.checks.find(c => c.name === 'A@6-completion').pass, true,
++    'Failed denominator must not hide independent numeric outcomes');
++  const dim = temporalTrialGate(fixture({ targetBrightness: .3 }));
++  assert.equal(dim.checks.find(c => c.name === 'A@6-completion').pass, false);
++  assert.ok(Math.abs(dim.metrics[0].gains.find(g => g.k === 6 && g.event === 0).meanB - .3) < 1e-12);
++});
++
++test('empty exclusive denominator fails without suppressing control measurements', () => {
++  const result = temporalTrialGate(fixture({ exclusive: false }));
++  assert.equal(result.pass, false);
++  assert.equal(result.checks[0].pass, false);
++  assert.equal(result.metrics.length, 3);
++  assert.equal(result.metrics[0].gains[0].rows[0].coverage, null);
++});
