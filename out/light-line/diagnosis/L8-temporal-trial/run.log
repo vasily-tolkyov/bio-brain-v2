@@ -1,0 +1,41 @@
+Running temporalStorm development seed 101 (30 trials per arm).
+{
+  "before": {
+    "pass": false,
+    "exclusive": [
+      18,
+      23
+    ],
+    "A6_B": 0.13583139433573524,
+    "completion": 0,
+    "shuffled_B": 0.000003118828335445332,
+    "distractor_B": 5.121419463625989e-8,
+    "reverse_B": 1.5631453447225586e-10
+  },
+  "gateOnly": {
+    "pass": false,
+    "exclusive": [
+      18,
+      23
+    ],
+    "A6_B": 0.13583139433573524,
+    "completion": 0,
+    "shuffled_B": 0.000003118828335445332,
+    "distractor_B": 5.121419463625989e-8,
+    "reverse_B": 1.5631453447225586e-10
+  },
+  "after": {
+    "pass": true,
+    "exclusive": [
+      18,
+      23
+    ],
+    "A6_B": 0.9999974109627108,
+    "completion": 1,
+    "shuffled_B": 0.001620359460520204,
+    "distractor_B": 0.0012275564186124655,
+    "reverse_B": 0.000052090288276981595
+  },
+  "arithmeticAndMembership": true,
+  "temporalPass": true
+}

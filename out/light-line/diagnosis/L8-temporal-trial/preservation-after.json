@@ -1,0 +1,24 @@
+{
+  "pass": true,
+  "checkedExistingFiles": 1462,
+  "unchangedExistingFiles": 1459,
+  "changedSourceFiles": [
+    "src/light-line/temporal-config.mjs",
+    "src/light-line/temporal-stack.mjs",
+    "src/light-line/temporal.mjs"
+  ],
+  "addedSourceOrTestFiles": [
+    "src/light-line/tests/L8-temporal-gate.mjs",
+    "src/light-line/tests/L8-temporal-trial.mjs",
+    "tests/light-line/L8-temporal-trial.test.mjs"
+  ],
+  "missing": [],
+  "protectedEvidenceFilesUnchanged": 1347,
+  "acceptanceL8FilesUnchanged": 1327,
+  "historicalL8Verdict": false,
+  "otherProposalsUnchanged": true,
+  "officialCampaignsRun": false,
+  "holdoutsRun": false,
+  "commit": false,
+  "push": false
+}

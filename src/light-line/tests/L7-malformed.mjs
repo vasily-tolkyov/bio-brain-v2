@@ -1,0 +1,45 @@
+import { hash } from '../persistence.mjs';
+// Reseal each structural mutation: rejection must not rely only on a checksum.
+export const cases = [
+  ['nonfinite-rho', s => { s.pipeline.sensory.layer.cores[0][0].rho = NaN; }],
+  ['negative-rho', s => { s.pipeline.sensory.layer.cores[0][0].rho = -.1; }],
+  ['B-range', s => { s.pipeline.sensory.cache.find(([, fields]) => fields.length)[1][0].replicas[0].brightness[0] = 2; }],
+  ['geometry', s => { s.pipeline.sensory.layer.identity.geometry[0][0] += .01; }],
+  ['optical-config', s => { s.binding.opticalRule.eta = .3; }],
+  ['missing-raw-samples', s => { delete s.pipeline.sensory.layer.cores[0][0].samples; }],
+  ['sample-multiplicity', s => { s.pipeline.sensory.layer.cores[0][0].samples.pop(); }],
+  ['catalogue-ID', s => { s.pipeline.sensory.layer.state.catalogue.entries[0].id = 900; }],
+  ['M2-frame-count', s => { s.pipeline.sensory.layer.state.catalogue.entries[0].frameIndices.pop(); }],
+  ['pipeline-clock', s => { s.pipeline.t += 100; }],
+  ['schedule-cursor', s => { s.scheduleState.cursor++; }],
+  ['duplicate-generations', s => { s.pipeline.learning.future.downward.weights[1].generation = s.pipeline.learning.future.downward.weights[0].generation; }],
+  ['unknown-pending-generation', s => { s.pipeline.learning.novelty.pending[0].generation = s.pipeline.learning.future.downward.nextGeneration + 1; }],
+  ['credit-generation', s => { s.pipeline.learning.factor.predictions[0].generation += 10000; }],
+  ['legacy-schema', s => { s.schema = 'neural-state-v1'; }],
+  ['wire-schema', s => { s.schema = 'light-wire-v1'; }],
+  ['legacy-neuronal-field', s => { s.pipeline.V = [0]; }],
+  ['stable-mapping', s => { s.pipeline.mapping[0].id = 'unregistered'; }],
+  ['body-inventory', s => { s.pipeline.body.streams.pop(); }],
+  ['body-trace-clock', s => { s.pipeline.body.changes.traces[0].t += 10000; }],
+  ['goal-cycle', s => { const [parent, link] = s.pipeline.goals.links[0]; s.pipeline.goals.parents.push([parent, link.id]); }],
+  ['goal-generation-link', s => { s.pipeline.goals.links[0][1].generation += 10000; }],
+  ['nonbinary-M', s => { s.pipeline.goals.counts[0].M = .2; }],
+  ['nonbinary-match', s => { s.pipeline.learning.novelty.pending[0].matched = .2; }],
+  ['drive-owner', s => { s.pipeline.drive.owned = 'absent'; }],
+  ['environment-RNG', s => { s.pipeline.environment.state.rng = -1; }],
+  ['environment-clock', s => { s.pipeline.environment.state.t += .5; s.pipeline.environment.state.samples++; }],
+  ['future-record-ID', s => { s.pipeline.learning.future.records[0].B = 'absent'; }],
+  ['frozen-mapping-ID', s => { s.pipeline.output.stream.frozenMapping[0].id = 999; }],
+  ['source-config-JSON', s => { s.binding.source['persistence-config.json'] = '0'.repeat(64); }],
+  ['schedule-identity', s => { s.binding.schedule.id += '-other'; }],
+  ['motor-previous', s => { s.pipeline.output.previous = 'unknown-action'; }],
+  ['queued-cursor', s => { s.pipeline.sensory.layer.pending.cursor++; }, 'queued'],
+  ['queued-elementary', s => { s.pipeline.sensory.layer.queued[0].carrier = .99; }, 'queued'],
+  ['sample-batch-duration', s => { s.pipeline.partial.sensory[0].durationMs += .5; }, 'queued'],
+  ['missing-pending-instance', s => { s.pipeline.learning.novelty.pending.pop(); }],
+  ['history-gap', s => { s.pipeline.sensory.layer.state.history[0].end += .5; }],
+];
+export function mutate(snapshot, name) {
+  const s = structuredClone(snapshot); cases.find(c => c[0] === name)[1](s);
+  const { digest, ...payload } = s; s.digest = hash(payload); return s;
+}

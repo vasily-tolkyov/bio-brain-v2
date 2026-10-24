@@ -1,0 +1,47 @@
+{
+  "schema": "light-line-remount-design-recovery-v1",
+  "recoveredAt": "2026-10-23T14:02:48+08:00",
+  "method": "Exact added-file diff bodies with logged Git blob checks; DECISIONS from contiguous impl-L5 cat output. Only REMOUNT headers are new.",
+  "files": [
+    {
+      "file": "out/light-line/design/PLAN.md",
+      "sourceLog": "logs/codex-light-line-design-p3.log",
+      "startLine": 7730,
+      "endLine": 7968,
+      "recoveredBodySha256": "6d1f3974b928ec34d4ce119c4ac0c20ff43c5693ec89f2d6f3140ce6a235aa75",
+      "loggedGitBlob": "600949031a0a15d6aee503fb3a1e6a68cb6b08b9",
+      "loggedGitBlobVerified": true,
+      "restoredSha256": "402d6a3fae3d1b8cef446502047d9c5605bf1e45d8b25a0f20ad3ed782dec816"
+    },
+    {
+      "file": "out/light-line/design/WIRING-CHANGES.md",
+      "sourceLog": "logs/codex-light-line-design-p3.log",
+      "startLine": 7975,
+      "endLine": 8120,
+      "recoveredBodySha256": "b000efc00aff96e52a70634672361c59556a127a63136fd3d893afc8cdef9782",
+      "loggedGitBlob": "bdb7c72f60b33a2eb3bb60d788c9fc6615282413",
+      "loggedGitBlobVerified": true,
+      "restoredSha256": "ce2017bc07d8d69ac1f023e73b5f391d731ede81481e661cc853f0a2c66874c1"
+    },
+    {
+      "file": "out/light-line/design/ARCH-QUESTIONS.md",
+      "sourceLog": "logs/codex-light-line-design-p3.log",
+      "startLine": 7677,
+      "endLine": 7723,
+      "recoveredBodySha256": "6d3bc39446e037cdf223127c6ce76379f4db36bb1079c58529c98fd20df68aed",
+      "loggedGitBlob": "e9a91f1627cdecb336c654a6c4d6ff2d037a8a8a",
+      "loggedGitBlobVerified": true,
+      "restoredSha256": "4952755fe91be3d93123cd18f0e0f6e3e36f2ae133ab9e88d511a7e7430ab4c9"
+    },
+    {
+      "file": "out/light-line/design/DECISIONS.md",
+      "sourceLog": "logs/codex-light-line-impl-L5.log",
+      "startLine": 315,
+      "endLine": 402,
+      "recoveredBodySha256": "271619625907c74329c5ba19eec49f6c9c1b215f3899b5a0f139561cb6133638",
+      "restoredSha256": "9d544703f3a50cc3d58ac023ccf1274b18020c3529605ab03aaffdf19b0d377c"
+    }
+  ],
+  "priorEvidenceStatus": "lost-after-remount; not reconstructed or re-certified",
+  "historicalFreezeHashMismatch": "Earlier L5 logs report a pre-existing DECISIONS-only mismatch. This is historical testimony, not a current hash verification."
+}
